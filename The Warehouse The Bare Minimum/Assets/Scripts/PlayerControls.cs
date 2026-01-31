@@ -1,9 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 public class PlayerControls : MonoBehaviour
 
 // If Something is wrong feel free to change but tell me so I know how to do it correctly
-
 {
+    //These variables get the value of WASD as a flaot value is if it were reading a joystick.
+    private float _horizontalInput, _verticalInput;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -52,7 +57,10 @@ public class PlayerControls : MonoBehaviour
         {
             right();
         }
-
-    
     }
+
+    private void GetInput()
+	{
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
+	}
 }
