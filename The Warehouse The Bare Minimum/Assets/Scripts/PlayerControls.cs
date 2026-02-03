@@ -6,9 +6,13 @@ public class PlayerControls : MonoBehaviour
 
 // If Something is wrong feel free to change but tell me so I know how to do it correctly
 {
+    public PlayerCam pc;
+
     [HideInInspector]
     //This is the transform of the players parent object
     public Transform orientation;
+
+    public Transform playerModel;
 
     [HideInInspector]
     //The rigidbody reference of the player
@@ -41,6 +45,8 @@ public class PlayerControls : MonoBehaviour
     //These variables get the value of WASD as a flaot value is if it were reading a joystick
     private float _horizontalInput, _verticalInput;
 
+    private Quaternion _lastRotation;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -60,7 +66,7 @@ public class PlayerControls : MonoBehaviour
         GetInput();
 
         //Sends an invisible ray down from the players center. If it hits something then it returns true. If it hits nothing, then it returns false
-        grounded = Physics.Raycast(transform.position, Vector3.down, (transform.localScale.y * 0.5f) + groundCheckDistance);
+        grounded = Physics.BoxCast(transform.position, playerModel.localScale/2 ,Vector3.down, Quaternion.Euler(orientation.rotation.eulerAngles), (transform.localScale.y * 0.5f) + groundCheckDistance);
 
         //Sets the gravity based on if player is grounded or not
         if(grounded)
@@ -148,7 +154,13 @@ public class PlayerControls : MonoBehaviour
     //Moves the player
     private void MovePlayer()
 	{
-        moveDirection = (orientation.forward * _verticalInput) + (orientation.right * _horizontalInput);
+        moveDirection = (pc.cameraXOrientation.forward * _verticalInput) + (pc.cameraXOrientation.right * _horizontalInput);
+        moveDirection.y = 0;
+
+        if (Quaternion.LookRotation(moveDirection) != Quaternion.identity)
+		{
+            orientation.rotation = Quaternion.LookRotation(moveDirection);
+        }
 
         rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
     }
