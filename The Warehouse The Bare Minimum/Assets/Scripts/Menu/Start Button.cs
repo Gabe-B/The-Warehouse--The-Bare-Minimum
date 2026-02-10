@@ -17,12 +17,19 @@ public class StartButton : MonoBehaviour
 
 	private void Start()
 	{
-		Debug.Log((SceneManager.GetActiveScene().buildIndex + 1) + ", " + maps.Count);
+		for (int i = 1; i < SceneManager.sceneCountInBuildSettings; i++)
+		{
+			//Debug.Log(SceneManager.GetSceneByBuildIndex(i).name);
+			maps.Add(SceneManager.GetSceneByBuildIndex(i));
+		}
+		Debug.Log((SceneManager.GetActiveScene().buildIndex + 1) + ", " + maps.Count);	
 	}
 
 	public void OnStartPressed()
 	{
-		int randomMap = Random.Range(SceneManager.GetActiveScene().buildIndex+1, maps.Count);
+		int randomMap = Random.Range(SceneManager.GetActiveScene().buildIndex+1, maps.Count+1);
+
+		Debug.Log(randomMap);
 
 		SceneManager.LoadScene(randomMap);
 	}
