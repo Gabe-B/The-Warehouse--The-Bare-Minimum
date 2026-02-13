@@ -2266,12 +2266,16 @@ PrefabInstance:
       objectReference: {fileID: 1467168128}
     - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: moveSpeed
-      value: 1000
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: playerModel
       value: 
       objectReference: {fileID: 868905266}
+    - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: sprintSpeed
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: groundCheckDistance
       value: 0.1
@@ -2299,6 +2303,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8236070782341004144, guid: 399d029905d65624b912c171cf98f710, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1467168127}
+    - targetCorrespondingSourceObject: {fileID: 8236070782341004144, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1467168133}
   m_SourcePrefab: {fileID: 100100000, guid: 399d029905d65624b912c171cf98f710, type: 3}
 --- !u!1 &243011278
 GameObject:
@@ -4916,6 +4923,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1467168132}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ccd34803262e5f8438bf99f7fc88df18, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ccd34803262e5f8438bf99f7fc88df18, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ccd34803262e5f8438bf99f7fc88df18, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ccd34803262e5f8438bf99f7fc88df18, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10115,6 +10134,26 @@ MonoBehaviour:
 --- !u!4 &1467168132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4353932658597839204, guid: 399d029905d65624b912c171cf98f710, type: 3}
+  m_PrefabInstance: {fileID: 233042120}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1467168133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467168121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f0a21873c8c504ca8d66605339b5f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::animControls
+  Player: {fileID: 1200480892}
+  rb: {fileID: 1467168135}
+  animationSpeed: 7.5
+--- !u!54 &1467168135 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 3982684591725840485, guid: 399d029905d65624b912c171cf98f710, type: 3}
   m_PrefabInstance: {fileID: 233042120}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1482394524 stripped
