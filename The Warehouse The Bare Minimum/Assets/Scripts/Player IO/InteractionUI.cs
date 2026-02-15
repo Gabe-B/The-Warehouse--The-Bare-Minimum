@@ -12,7 +12,7 @@ public class InteractionUI : MonoBehaviour
        if (other.gameObject.CompareTag("interUI"))
        {
            textMesh.text = "Press E to interact";
-           if (Input.GetKey("e"))
+           if (Input.GetKeyDown("e"))
             {
                 Debug.Log("You were in zone and pressed E");
             }

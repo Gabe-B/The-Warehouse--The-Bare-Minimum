@@ -50,6 +50,7 @@ public class PlayerControls : MonoBehaviour
     private Quaternion _lastRotation;
 
     private bool _jumpCRStarted = false;
+    private bool _onShelf = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -78,11 +79,20 @@ public class PlayerControls : MonoBehaviour
 		{
             Physics.gravity = new Vector3(0, -groundedGravity, 0);
         }
+        else if (_onShelf)
+		{
+            Physics.gravity = new Vector3(0, -groundedGravity, 0);
+        }
         else
 		{
             Physics.gravity = new Vector3(0, -airGravity, 0);
         }
     }
+
+	//private void OnDrawGizmos()
+	//{
+ //       Gizmos.DrawCube(transform.position, new Vector3(playerModel.localScale.x, playerModel.localScale.y + (transform.localScale.y * 0.5f) + groundCheckDistance, playerModel.localScale.z));
+	//}
 
 	#region old move functions
 	void forward()
@@ -134,7 +144,25 @@ public class PlayerControls : MonoBehaviour
         MovePlayer();
     }
 
-    //Gets the inputs from the player
+	private void OnCollisionStay(Collision collision)
+	{
+        if (collision.gameObject.tag == "Shelf")
+        {
+            _onShelf = true;
+            Debug.Log("on shelf");
+        }
+    }
+
+	private void OnCollisionExit(Collision collision)
+	{
+        if (collision.gameObject.tag == "Shelf")
+        {
+            _onShelf = false;
+            Debug.Log("off shelf");
+        }
+    }
+
+	//Gets the inputs from the player
 	private void GetInput()
 	{
         _horizontalInput = Input.GetAxisRaw("Horizontal");
