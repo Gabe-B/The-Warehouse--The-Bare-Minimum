@@ -27,6 +27,8 @@ public class PlayerControls : MonoBehaviour
     //How hard the player jumps
     public float jumpForce;
 
+    public float jumpDelay;
+
     //The starting gravity
     public float groundedGravity;
 
@@ -47,6 +49,8 @@ public class PlayerControls : MonoBehaviour
 
     private Quaternion _lastRotation;
 
+    private bool _jumpCRStarted = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,7 +70,8 @@ public class PlayerControls : MonoBehaviour
         GetInput();
 
         //Sends an invisible ray down from the players center. If it hits something then it returns true. If it hits nothing, then it returns false
-        grounded = Physics.BoxCast(transform.position, playerModel.localScale/2 ,Vector3.down, Quaternion.Euler(orientation.rotation.eulerAngles), (transform.localScale.y * 0.5f) + groundCheckDistance);
+        grounded = Physics.BoxCast(transform.position, playerModel.localScale/2, Vector3.down, Quaternion.Euler(orientation.rotation.eulerAngles), (transform.localScale.y * 0.5f) + groundCheckDistance);
+        Debug.Log(grounded);
 
         //Sets the gravity based on if player is grounded or not
         if(grounded)
@@ -136,9 +141,9 @@ public class PlayerControls : MonoBehaviour
         _verticalInput = Input.GetAxisRaw("Vertical");
 
         //If the spacebar is pressed, jump
-        if(Input.GetButton("Jump") && grounded)
+        if(Input.GetButton("Jump") && grounded && !_jumpCRStarted)
 		{
-            Jump();
+            StartCoroutine(Jump());
 		}
 
         if(Input.GetButton("Fire3"))
@@ -166,9 +171,12 @@ public class PlayerControls : MonoBehaviour
     }
 
     //Makes the player jump
-    private void Jump()
+    private IEnumerator Jump()
 	{
+        _jumpCRStarted = true;
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        yield return new WaitForSeconds(jumpDelay);
+        _jumpCRStarted = false;
     }
 
     public void Sprint()

@@ -2164,6 +2164,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 41623389175363603, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 41623389175363603, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3982684591725840485, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_Constraints
       value: 112
@@ -2186,11 +2194,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4072479187250059421, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9848078
+      value: 0.97134215
       objectReference: {fileID: 0}
     - target: {fileID: 4072479187250059421, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.17364816
+      value: 0.2376859
       objectReference: {fileID: 0}
     - target: {fileID: 4072479187250059421, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2202,7 +2210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4072479187250059421, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 20
+      value: 27.5
       objectReference: {fileID: 0}
     - target: {fileID: 4353932658597839204, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_LocalScale.x
@@ -2257,6 +2265,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4781340808248962081, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: m_Size.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781340808248962081, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: m_Size.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781340808248962081, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: m_Size.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781340808248962081, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: m_Center.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781340808248962081, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
@@ -2265,8 +2289,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1467168128}
     - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: jumpDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: jumpForce
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: moveSpeed
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: airGravity
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: playerModel
@@ -2277,8 +2313,12 @@ PrefabInstance:
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: jumpCooldown
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030568955236975104, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: groundCheckDistance
-      value: 0.1
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8236070782341004144, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_Name
@@ -8197,7 +8237,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 3, y: 8, z: 4}
   m_Center: {x: 0, y: 4, z: 0}
