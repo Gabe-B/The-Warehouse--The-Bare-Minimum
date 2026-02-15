@@ -2348,6 +2348,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8236070782341004144, guid: 399d029905d65624b912c171cf98f710, type: 3}
+      propertyPath: m_TagString
+      value: player
+      objectReference: {fileID: 0}
     - target: {fileID: 8320191645863941204, guid: 399d029905d65624b912c171cf98f710, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2370,9 +2374,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8236070782341004144, guid: 399d029905d65624b912c171cf98f710, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1467168133}
-    - targetCorrespondingSourceObject: {fileID: 8236070782341004144, guid: 399d029905d65624b912c171cf98f710, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1467168136}
   m_SourcePrefab: {fileID: 100100000, guid: 399d029905d65624b912c171cf98f710, type: 3}
 --- !u!1 &243011278
 GameObject:
@@ -8315,17 +8316,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9573cc74fab9784428fba50fe96334e7, type: 3}
   m_PrefabInstance: {fileID: 488293159}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1152823942 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2153701061616372207, guid: c1bf97492cdc6184aa109e60ab8bb223, type: 3}
-  m_PrefabInstance: {fileID: 1702395589030817105}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1167240909 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8164078558771037576, guid: 9573cc74fab9784428fba50fe96334e7, type: 3}
@@ -10512,19 +10502,6 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 3982684591725840485, guid: 399d029905d65624b912c171cf98f710, type: 3}
   m_PrefabInstance: {fileID: 233042120}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1467168136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467168121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c1c8bbf33238774e894d8aa349dbb1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractionUI
-  textMesh: {fileID: 1152823942}
 --- !u!4 &1482394524 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7280131705f3c044aa039562dc6fa6e9, type: 3}
