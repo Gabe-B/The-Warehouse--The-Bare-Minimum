@@ -22,7 +22,7 @@ public class StartButton : MonoBehaviour
 			//Debug.Log(SceneManager.GetSceneByBuildIndex(i).name);
 			maps.Add(SceneManager.GetSceneByBuildIndex(i));
 		}
-		Debug.Log((SceneManager.GetActiveScene().buildIndex + 1) + ", " + maps.Count);	
+		//Debug.Log((SceneManager.GetActiveScene().buildIndex + 1) + ", " + maps.Count);	
 	}
 
 	public void OnStartPressed()
