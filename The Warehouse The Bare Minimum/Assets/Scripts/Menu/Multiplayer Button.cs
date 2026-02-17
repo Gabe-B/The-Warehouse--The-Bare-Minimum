@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MultiplayerButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-	private bool p_pointerIsHovering = false;
+	public bool p_pointerIsHovering = false;
 	private Image b_buttonBackgroundColor;
 	private Color b_defaultButtonColor;
 
