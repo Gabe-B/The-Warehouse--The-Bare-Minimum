@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCam : MonoBehaviour
 {
+    public InputActionReference look;
+
     //The sensitivity of the camera
     public float xSensitivity, ySensitivity;
 
@@ -24,15 +27,17 @@ public class PlayerCam : MonoBehaviour
         orientation = gameObject.GetComponent<Transform>();
     }
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
     {
         //Gets the mouse inputs from the player. Mouse X & Y are flipped from unity
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.fixedDeltaTime * ySensitivity;
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.fixedDeltaTime * xSensitivity;
+        //float mouseY = look.action.ReadValue<float>() * Time.fixedDeltaTime * ySensitivity;
+        //float mouseX = look.action.ReadValue<float>() * Time.fixedDeltaTime * xSensitivity;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
+        Vector2 lookDirection = look.action.ReadValue<Vector2>() * Time.deltaTime;
+
+        yRotation += lookDirection.x * xSensitivity;
+        xRotation -= lookDirection.y * ySensitivity;
 
         //Stops the player camera from just rotating over the player
         xRotation = Mathf.Clamp(xRotation, -30f, 30f);

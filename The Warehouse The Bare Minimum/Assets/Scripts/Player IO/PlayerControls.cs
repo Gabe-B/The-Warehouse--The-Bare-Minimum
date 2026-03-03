@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 
 // If Something is wrong feel free to change but tell me so I know how to do it correctly
 {
+    public InputActionReference playerControls;
+
     public PlayerCam pc;
 
     [HideInInspector]
@@ -46,6 +49,8 @@ public class PlayerControls : MonoBehaviour
 
     //These variables get the value of WASD as a flaot value is if it were reading a joystick
     private float _horizontalInput, _verticalInput;
+
+    private Vector2 _moveDirection;
 
     private Quaternion _lastRotation;
 
@@ -165,8 +170,11 @@ public class PlayerControls : MonoBehaviour
 	//Gets the inputs from the player
 	private void GetInput()
 	{
-        _horizontalInput = Input.GetAxisRaw("Horizontal");
-        _verticalInput = Input.GetAxisRaw("Vertical");
+        //_horizontalInput = Input.GetAxisRaw("Horizontal");
+        //_verticalInput = Input.GetAxisRaw("Vertical");
+
+        _moveDirection = playerControls.action.ReadValue<Vector2>();
+        //Debug.Log(_moveDirection);
 
         //If the spacebar is pressed, jump
         if(Input.GetButton("Jump") && grounded && !_jumpCRStarted)
@@ -187,15 +195,22 @@ public class PlayerControls : MonoBehaviour
     //Moves the player
     private void MovePlayer()
 	{
-        moveDirection = (pc.cameraXOrientation.forward * _verticalInput) + (pc.cameraXOrientation.right * _horizontalInput);
-        moveDirection.y = 0;
+        //moveDirection = (pc.cameraXOrientation.forward * _verticalInput) + (pc.cameraXOrientation.right * _horizontalInput);
+        //moveDirection.y = 0;
+        //Debug.Log(moveDirection);
+        //Vector2 dir = (pc.cameraXOrientation.forward * _moveDirection.x) + (pc.cameraXOrientation.right * _moveDirection.y);
+        //Debug.Log(dir);
 
-        if (Quaternion.LookRotation(moveDirection) != Quaternion.identity)
+        Vector3 dir = (pc.cameraXOrientation.forward * _moveDirection.y) + (pc.cameraXOrientation.right * _moveDirection.x);
+        //Debug.Log(dir);
+        dir.y = 0;
+
+        if (Quaternion.LookRotation(dir) != Quaternion.identity)
 		{
-            orientation.rotation = Quaternion.LookRotation(moveDirection);
+            orientation.rotation = Quaternion.LookRotation(dir);
         }
 
-        rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
+        rb.AddForce(dir.normalized * moveSpeed, ForceMode.Force);
     }
 
     //Makes the player jump
