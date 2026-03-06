@@ -9,7 +9,7 @@ public class movingCarsL: MonoBehaviour
     //Creating the teleport function
     void carTeleport()
     {
-        car.transform.position = new Vector3 (838,14,-90);
+        car.transform.position = new Vector3 (838,-492,-90);
     }
     void FixedUpdate()
     {
