@@ -7,7 +7,9 @@ public class PlayerControls : MonoBehaviour
 
 // If Something is wrong feel free to change but tell me so I know how to do it correctly
 {
-    public InputActionReference playerControls;
+    public InputActionAsset moveControlsMap;
+    private InputActionMap mc;
+    private InputAction moveControls;
 
     public PlayerCam pc;
 
@@ -57,8 +59,27 @@ public class PlayerControls : MonoBehaviour
     private bool _jumpCRStarted = false;
     private bool _onShelf = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
+    {
+        moveControlsMap = GetComponent<PlayerInput>().actions;
+        mc = moveControlsMap.FindActionMap("Player");
+    }
+
+    private void OnEnable()
+	{
+        mc.FindAction("Move").started += OnMove;
+        moveControls = mc.FindAction("Move");
+        mc.Enable();
+    }
+
+	private void OnDisable()
+	{
+        mc.FindAction("Move").started -= OnMove;
+        mc.Disable();
+    }
+
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
     {
         //Automatically gets the components
         rb = gameObject.GetComponent<Rigidbody>();
@@ -77,7 +98,7 @@ public class PlayerControls : MonoBehaviour
 
         //Sends an invisible ray down from the players center. If it hits something then it returns true. If it hits nothing, then it returns false
         grounded = Physics.BoxCast(transform.position, playerModel.localScale/2, Vector3.down, Quaternion.Euler(orientation.rotation.eulerAngles), (transform.localScale.y * 0.5f) + groundCheckDistance);
-        Debug.Log(grounded);
+        //Debug.Log(grounded);
 
         //Sets the gravity based on if player is grounded or not
         if(grounded)
@@ -173,9 +194,6 @@ public class PlayerControls : MonoBehaviour
         //_horizontalInput = Input.GetAxisRaw("Horizontal");
         //_verticalInput = Input.GetAxisRaw("Vertical");
 
-        _moveDirection = playerControls.action.ReadValue<Vector2>();
-        //Debug.Log(_moveDirection);
-
         //If the spacebar is pressed, jump
         if(Input.GetButton("Jump") && grounded && !_jumpCRStarted)
 		{
@@ -205,10 +223,21 @@ public class PlayerControls : MonoBehaviour
         //Debug.Log(dir);
         dir.y = 0;
 
-        if (Quaternion.LookRotation(dir) != Quaternion.identity)
-		{
-            orientation.rotation = Quaternion.LookRotation(dir);
-        }
+        orientation.rotation = Quaternion.LookRotation(dir);
+
+        rb.AddForce(dir.normalized * moveSpeed, ForceMode.Force);
+    }
+
+    public void OnMove(InputAction.CallbackContext ctx)
+	{
+        _moveDirection = moveControls.ReadValue<Vector2>();
+        //Debug.Log(_moveDirection);
+
+        Vector3 dir = (pc.cameraXOrientation.forward * _moveDirection.y) + (pc.cameraXOrientation.right * _moveDirection.x);
+        //Debug.Log(dir);
+        dir.y = 0;
+
+        orientation.rotation = Quaternion.LookRotation(dir);
 
         rb.AddForce(dir.normalized * moveSpeed, ForceMode.Force);
     }

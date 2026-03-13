@@ -1,9 +1,7 @@
 using UnityEngine;
 
 public class lookAtCamera : MonoBehaviour
-
 {
-
     public Transform cameraSelect;
     
     void Start()

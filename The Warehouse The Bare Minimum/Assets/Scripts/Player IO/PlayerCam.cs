@@ -3,7 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerCam : MonoBehaviour
 {
-    public InputActionReference look;
+    public InputActionAsset cameraControlsMap;
+    private InputActionMap cc;
+    private InputAction cameraControls;
 
     //The sensitivity of the camera
     public float xSensitivity, ySensitivity;
@@ -16,6 +18,27 @@ public class PlayerCam : MonoBehaviour
 
     //Handles current rotation of the player
     private float yRotation, xRotation;
+
+    private Vector2 lookDirection;
+
+    private void Awake()
+    {
+        cameraControlsMap = GetComponent<PlayerInput>().actions;
+        cc = cameraControlsMap.FindActionMap("Player");
+    }
+
+    private void OnEnable()
+    {
+        cc.FindAction("Look").started += OnLook;
+        cameraControls = cc.FindAction("Look");
+        cc.Enable();
+    }
+
+    private void OnDisable()
+    {
+        cc.FindAction("Look").started -= OnLook;
+        cc.Disable();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,8 +57,6 @@ public class PlayerCam : MonoBehaviour
         //float mouseY = look.action.ReadValue<float>() * Time.fixedDeltaTime * ySensitivity;
         //float mouseX = look.action.ReadValue<float>() * Time.fixedDeltaTime * xSensitivity;
 
-        Vector2 lookDirection = look.action.ReadValue<Vector2>() * Time.deltaTime;
-
         yRotation += lookDirection.x * xSensitivity;
         xRotation -= lookDirection.y * ySensitivity;
 
@@ -45,5 +66,10 @@ public class PlayerCam : MonoBehaviour
         //Rotates the camera
         cameraXOrientation.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         //orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+    }
+
+    public void OnLook(InputAction.CallbackContext ctx)
+	{
+        lookDirection = cameraControls.ReadValue<Vector2>() * Time.deltaTime;
     }
 }
