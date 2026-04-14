@@ -31,6 +31,8 @@ public class PlaySelection : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // Update is called once per frame
     void Update()
     {
+        //Animates the Start and Shop buttons
+        //Checks if the pointer is hovering over the start
         if(p_pointerIsHovering)
 		{
             elapsedTime += Time.deltaTime;
