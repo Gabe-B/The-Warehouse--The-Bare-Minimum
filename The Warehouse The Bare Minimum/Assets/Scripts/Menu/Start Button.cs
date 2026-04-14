@@ -20,6 +20,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	{
 		if (p_pointerIsHovering)
 		{
+			//Makes the button flash between white and green using the built in PingPong algorithm
 			b_buttonBackgroundColor.color = Color.Lerp(b_defaultButtonColor, Color.green, Mathf.PingPong(Time.time, 1));
 		}
 		else
@@ -28,6 +29,7 @@ public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		}
 	}
 
+	//Uses the pointer enter/exit handlers to detect when the cursor is hovering over the gameobject this script is attached to
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		p_pointerIsHovering = true;
