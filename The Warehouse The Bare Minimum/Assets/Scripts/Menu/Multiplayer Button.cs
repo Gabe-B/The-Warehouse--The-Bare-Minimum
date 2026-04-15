@@ -21,11 +21,11 @@ public class MultiplayerButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
 		if (p_pointerIsHovering)
 		{
 			//Makes the button flash between white and red using the built in PingPong algorithm
-			b_buttonBackgroundColor.color = Color.Lerp(b_defaultButtonColor, Color.red, Mathf.PingPong(Time.time, 1));
+			//b_buttonBackgroundColor.color = Color.Lerp(b_defaultButtonColor, Color.red, Mathf.PingPong(Time.time, 1));
 		}
 		else
 		{
-			b_buttonBackgroundColor.color = b_defaultButtonColor;
+			//b_buttonBackgroundColor.color = b_defaultButtonColor;
 		}
 	}
 

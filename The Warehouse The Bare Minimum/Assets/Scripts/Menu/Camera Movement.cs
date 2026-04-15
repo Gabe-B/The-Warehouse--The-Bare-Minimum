@@ -9,8 +9,8 @@ public class CameraMovement : MonoBehaviour
     public Transform camStartPosition, camSinglePlayerPosition;
     public float transitionTime;
 
-    public List<GameObject> mainMenuButtonsToHide;
-    public List<GameObject> singlePlayerButtonsToHide;
+    public GameObject mainMenuPanel;
+    public GameObject singlePlayerLobbyPanel;
 
     private bool _singleHasBeenPressed = false;
     private bool _backHasBeenPressed = false;
@@ -43,7 +43,7 @@ public class CameraMovement : MonoBehaviour
         if(_singleHasBeenPressed && currentScreen == MENU_SCREEN.Main)
 		{
             //Enables the ability for the game object to be interacted with
-            gameObject.GetComponent<Image>().raycastTarget = true;
+            //gameObject.GetComponent<Image>().raycastTarget = true;
 
             //The next few lines here handle the smooth transition from one camera position to the next
             elapsedTime += Time.deltaTime;
@@ -53,31 +53,9 @@ public class CameraMovement : MonoBehaviour
             mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, camSinglePlayerPosition.rotation, percentLerpComplete);
 
             //Hides the lsit of buttons on the main menu
-            if(mainMenuButtonsToHide[0].activeSelf)
+            if(mainMenuPanel.activeSelf)
 			{
-                foreach (GameObject g in mainMenuButtonsToHide)
-                {
-                    g.gameObject.SetActive(false);
-
-                    //Disables the color flashing between white and red/green
-					try
-					{
-                        g.GetComponent<StartButton>().p_pointerIsHovering = false;
-					}
-                    catch(Exception e)
-					{
-                        //Debug.Log(g.name + " doesn't have a Start Button Script Attached!");
-					}
-
-                    try
-                    {
-                        g.GetComponent<MultiplayerButton>().p_pointerIsHovering = false;
-                    }
-                    catch (Exception e)
-                    {
-                        //Debug.Log(g.name + " doesn't have a Multiplayer Button Script Attached!");
-                    }
-                }
+                mainMenuPanel.SetActive(false);
             }
 
             //The lerp function isn't exact, so this checks for when the camera is close enough to the end position and sets it to the end point
@@ -91,12 +69,9 @@ public class CameraMovement : MonoBehaviour
                 _singleHasBeenPressed = false;
 
                 //Enables all of the single player screen buttons
-                if (!singlePlayerButtonsToHide[0].activeSelf)
+                if (!singlePlayerLobbyPanel.activeSelf)
                 {
-                    foreach (GameObject g in singlePlayerButtonsToHide)
-                    {
-                        g.gameObject.SetActive(true);
-                    }
+                    singlePlayerLobbyPanel.SetActive(true);
                 }
             }
         }
@@ -104,7 +79,7 @@ public class CameraMovement : MonoBehaviour
 		else if (_backHasBeenPressed && currentScreen == MENU_SCREEN.Single)
 		{
             //Disables the ability for the game object to be interacted with
-            gameObject.GetComponent<Image>().raycastTarget = false;
+            //gameObject.GetComponent<Image>().raycastTarget = false;
 
             //The next few lines here handle the smooth transition from one camera position to the next
             elapsedTime += Time.deltaTime;
@@ -114,31 +89,9 @@ public class CameraMovement : MonoBehaviour
             mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, camStartPosition.rotation, percentLerpComplete);
 
             //Hides the lsit of buttons on the single player screen
-            if (singlePlayerButtonsToHide[0].activeSelf)
+            if (singlePlayerLobbyPanel.activeSelf)
             {
-                foreach (GameObject g in singlePlayerButtonsToHide)
-                {
-                    g.gameObject.SetActive(false);
-
-                    //Disables the color flashing between white and red/green just to stop any weirdness
-                    try
-                    {
-                        g.GetComponent<StartButton>().p_pointerIsHovering = false;
-                    }
-                    catch (Exception e)
-                    {
-                        //Debug.Log(g.name + " doesn't have a Start Button Script Attached!");
-                    }
-
-                    try
-                    {
-                        g.GetComponent<MultiplayerButton>().p_pointerIsHovering = false;
-                    }
-                    catch (Exception e)
-                    {
-                        //Debug.Log(g.name + " doesn't have a Multiplayer Button Script Attached!");
-                    }
-                }
+                singlePlayerLobbyPanel.SetActive(false);
             }
 
             //The lerp function isn't exact, so this checks for when the camera is close enough to the end position and sets it to the end point
@@ -152,12 +105,9 @@ public class CameraMovement : MonoBehaviour
                 _backHasBeenPressed = false;
 
                 //Enables all of the main menu buttons
-                if (!mainMenuButtonsToHide[0].activeSelf)
+                if (!mainMenuPanel.activeSelf)
                 {
-                    foreach (GameObject g in mainMenuButtonsToHide)
-                    {
-                        g.gameObject.SetActive(true);
-                    }
+                    mainMenuPanel.SetActive(true);
                 }
             }
         }

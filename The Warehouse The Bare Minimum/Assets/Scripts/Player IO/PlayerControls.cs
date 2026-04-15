@@ -58,6 +58,7 @@ public class PlayerControls : MonoBehaviour
 
     private bool _jumpCRStarted = false;
     private bool _onShelf = false;
+    private Vector3 _tempDir;
 
     private void Awake()
     {
@@ -223,7 +224,7 @@ public class PlayerControls : MonoBehaviour
         //Debug.Log(dir);
         dir.y = 0;
 
-        orientation.rotation = Quaternion.LookRotation(dir);
+        //orientation.rotation = Quaternion.LookRotation(dir);
 
         rb.AddForce(dir.normalized * moveSpeed, ForceMode.Force);
     }
@@ -234,10 +235,18 @@ public class PlayerControls : MonoBehaviour
         //Debug.Log(_moveDirection);
 
         Vector3 dir = (pc.cameraXOrientation.forward * _moveDirection.y) + (pc.cameraXOrientation.right * _moveDirection.x);
-        //Debug.Log(dir);
         dir.y = 0;
+        Debug.Log(dir);
 
-        orientation.rotation = Quaternion.LookRotation(dir);
+        if (dir != Vector3.zero)
+		{
+            _tempDir = dir;
+            orientation.rotation = Quaternion.LookRotation(dir.normalized);
+        }
+        else
+		{
+            orientation.rotation = Quaternion.LookRotation(dir.normalized);
+        }
 
         rb.AddForce(dir.normalized * moveSpeed, ForceMode.Force);
     }
