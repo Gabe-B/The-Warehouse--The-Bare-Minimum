@@ -1783,9 +1783,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewPlayerControls
   InputActions: {fileID: -944628639613478452, guid: 0411368724f1c83488cc1c7b34b7f24f, type: 3}
-  WalkSpeed: 5
-  RotateSpeed: 250
-  JumpSpeed: 5
+  playerModel: {fileID: 1212058629}
+  upperCamRotationClamp: 45
+  lowerCamRotatioClamp: -90
+  WalkSpeed: 200
+  RotateSpeed: 500
+  JumpSpeed: 10
+  cameraPivot: {fileID: 1298272041}
 --- !u!4 &159151137 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7280131705f3c044aa039562dc6fa6e9, type: 3}
@@ -7107,7 +7111,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3982684591725840485, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
       propertyPath: m_Constraints
-      value: 0
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 3982684591725840485, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4353932658597839204, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7115,7 +7123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4353932658597839204, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.5
+      value: 6.19
       objectReference: {fileID: 0}
     - target: {fileID: 4353932658597839204, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13374,6 +13382,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 696064311}
   m_SourcePrefab: {fileID: 100100000, guid: 7280131705f3c044aa039562dc6fa6e9, type: 3}
+--- !u!1 &1212058629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
+  m_PrefabInstance: {fileID: 565063713}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1215646351
 GameObject:
   m_ObjectHideFlags: 0
@@ -14769,6 +14782,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 169474528}
   m_SourcePrefab: {fileID: 100100000, guid: 9836e5b55e6793c4ca450625107e211e, type: 3}
+--- !u!1 &1298272041 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5521229259900133124, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
+  m_PrefabInstance: {fileID: 565063713}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1300323908
 GameObject:
   m_ObjectHideFlags: 0

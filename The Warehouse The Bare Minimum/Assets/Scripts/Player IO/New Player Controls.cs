@@ -16,10 +16,19 @@ public class NewPlayerControls : MonoBehaviour
     private Vector2 m_lookAmt;
     private Rigidbody m_rigidbody;
 
+    //Used for camera controls
+    public GameObject playerModel;
+    public float upperCamRotationClamp = 30;
+    public float lowerCamRotatioClamp = -30;
+    private float rotationAmtX = 0;
+    private float rotationAmtY = 0;
+
     //Rates at which to move the players IO
     public float WalkSpeed = 5;
     public float RotateSpeed = 5;
     public float JumpSpeed = 5;
+
+    public GameObject cameraPivot;
 
     private void OnEnable()
 	{
@@ -51,7 +60,10 @@ public class NewPlayerControls : MonoBehaviour
         m_moveAmt = m_moveAction.ReadValue<Vector2>();
         m_lookAmt = m_lookAction.ReadValue<Vector2>();
 
-        if(m_jumpAction.WasPressedThisFrame())
+        Rotating();
+        AdjustDirectionFacing();
+
+        if (m_jumpAction.WasPressedThisFrame())
 		{
             Jump();
 		}
@@ -60,27 +72,36 @@ public class NewPlayerControls : MonoBehaviour
 	private void FixedUpdate()
 	{
         Walking();
-        Rotating();
     }
 
 	private void Jump()
 	{
-        m_rigidbody.AddForceAtPosition(new Vector3(0, 5f, 0), Vector3.up, ForceMode.Impulse);
+        m_rigidbody.AddForceAtPosition(new Vector3(0, JumpSpeed, 0), Vector3.up, ForceMode.Impulse);
 	}
 
     private void Walking()
 	{
-        //m_rigidbody.MovePosition((m_rigidbody.position + transform.forward) * m_moveAmt * WalkSpeed * Time.deltaTime);
-        Debug.Log((m_rigidbody.position + transform.forward) * m_moveAmt * WalkSpeed * Time.deltaTime);
-	}
+        Vector3 moveDir = (cameraPivot.transform.forward * m_moveAmt.y) + (cameraPivot.transform.right * m_moveAmt.x);
+        moveDir.y = 0;
+
+        m_rigidbody.AddForce(moveDir.normalized * WalkSpeed, ForceMode.Force);
+    }
 
     private void Rotating()
 	{
-        float rotationAmt = m_lookAmt.x * RotateSpeed * Time.deltaTime;
-        Quaternion deltaRotation = Quaternion.Euler(0, rotationAmt, 0);
+        rotationAmtX += m_lookAmt.x * RotateSpeed * Time.deltaTime;
+        rotationAmtY -= m_lookAmt.y * RotateSpeed * Time.deltaTime;
 
-        //HERE YOU ARE ADDING THE ROTATION TO THE CAMERAS PIVOT POINT
+        rotationAmtY = Mathf.Clamp(rotationAmtY, lowerCamRotatioClamp, upperCamRotationClamp);
 
-        //m_rigidbody.MoveRotation(m_rigidbody.rotation * deltaRotation);
+        cameraPivot.transform.rotation = Quaternion.Euler(rotationAmtY, rotationAmtX, 0);
     }
+
+    private void AdjustDirectionFacing()
+	{
+        Vector3 dir = (cameraPivot.transform.forward * m_moveAmt.y) + (cameraPivot.transform.right * m_moveAmt.x);
+        dir.y = 0;
+
+        playerModel.transform.rotation = Quaternion.LookRotation(dir);
+	}
 }
