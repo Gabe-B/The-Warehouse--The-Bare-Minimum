@@ -9,7 +9,7 @@ public class PlayerSpawn : MonoBehaviour
 
     public void OnPlayerJoined(PlayerInput playerInput)
 	{
-        Debug.Log(playerInput.transform.position);
+        //Debug.Log(playerInput.transform.position);
         playerInput.GetComponent<Rigidbody>().position = spawnPoints[playerCount].transform.position;
 
         playerCount++;           

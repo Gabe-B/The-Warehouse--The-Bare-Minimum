@@ -10,6 +10,7 @@ public class NewPlayerControls : MonoBehaviour
     private InputAction m_moveAction;
     private InputAction m_lookAction;
     private InputAction m_jumpAction;
+    private InputAction m_sprintAction;
 
     //Used to move the player
     private Vector2 m_moveAmt;
@@ -17,18 +18,30 @@ public class NewPlayerControls : MonoBehaviour
     private Rigidbody m_rigidbody;
 
     //Used for camera controls
+    [Header("Movement Variables")]
     public GameObject playerModel;
+    public GameObject cameraPivot;
     public float upperCamRotationClamp = 30;
     public float lowerCamRotatioClamp = -30;
-    private float rotationAmtX = 0;
-    private float rotationAmtY = 0;
 
     //Rates at which to move the players IO
     public float WalkSpeed = 5;
+    public float SprintSpeed = 10;
     public float RotateSpeed = 5;
     public float JumpSpeed = 5;
 
-    public GameObject cameraPivot;
+    private float rotationAmtX = 0;
+    private float rotationAmtY = 0;
+    public float m_currentMoveSpeed;
+    private Vector3 m_tempFaceDir;
+    private bool isSprinting = false;
+
+    //Ground Check
+    public float groundCheckDistance;
+    public Vector3 groundCheckBoxSize;
+    private bool m_grounded = true;
+
+    public float gravity;
 
     private void OnEnable()
 	{
@@ -45,6 +58,7 @@ public class NewPlayerControls : MonoBehaviour
         m_moveAction = InputSystem.actions.FindAction("Move");
         m_lookAction = InputSystem.actions.FindAction("Look");
         m_jumpAction = InputSystem.actions.FindAction("Jump");
+        m_sprintAction = InputSystem.actions.FindAction("Sprint");
 
         m_rigidbody = GetComponent<Rigidbody>();
 	}
@@ -53,39 +67,89 @@ public class NewPlayerControls : MonoBehaviour
 	{
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        m_currentMoveSpeed = WalkSpeed;
+        groundCheckBoxSize = gameObject.GetComponent<BoxCollider>().size;
+        groundCheckBoxSize.y = 1;
 	}
 
 	private void Update()
 	{
-        m_moveAmt = m_moveAction.ReadValue<Vector2>();
-        m_lookAmt = m_lookAction.ReadValue<Vector2>();
+        m_grounded = Grounded();
 
         Rotating();
         AdjustDirectionFacing();
 
-        if (m_jumpAction.WasPressedThisFrame())
+        if(m_grounded)
 		{
-            Jump();
-		}
+            m_rigidbody.AddForce(Vector3.zero);
+        }
+        else
+		{
+            m_rigidbody.AddForce(0, gravity, 0);
+        }
+
+        if (m_sprintAction.WasReleasedThisFrame())
+        {
+            //Debug.Log("Sprint released!");
+            isSprinting = false;
+        }
     }
 
 	private void FixedUpdate()
 	{
-        Walking();
+        Moving();
     }
 
-	private void Jump()
+    public void OnMove(InputValue value)
+    {
+        m_moveAmt = value.Get<Vector2>();
+    }
+
+    public void OnLook(InputValue value)
 	{
-        m_rigidbody.AddForceAtPosition(new Vector3(0, JumpSpeed, 0), Vector3.up, ForceMode.Impulse);
+        m_lookAmt = value.Get<Vector2>();
 	}
 
-    private void Walking()
+    public void OnJump(InputValue value)
+	{
+        if (value.isPressed && m_grounded)
+        {
+            m_rigidbody.AddForceAtPosition(new Vector3(0, JumpSpeed, 0), Vector3.up, ForceMode.Impulse);
+        }
+    }
+
+    public void OnSprint(InputValue value)
+	{
+        
+    }
+
+    private void Moving()
 	{
         Vector3 moveDir = (cameraPivot.transform.forward * m_moveAmt.y) + (cameraPivot.transform.right * m_moveAmt.x);
         moveDir.y = 0;
 
-        m_rigidbody.AddForce(moveDir.normalized * WalkSpeed, ForceMode.Force);
+        if(isSprinting)
+		{
+            Sprinting();
+		}
+        else
+		{
+            Walking();
+		}
+
+        m_rigidbody.AddForce(moveDir.normalized * m_currentMoveSpeed, ForceMode.Force);
     }
+
+    private void Walking()
+	{
+        m_currentMoveSpeed = WalkSpeed;
+	}
+
+    private void Sprinting()
+	{
+        m_currentMoveSpeed = SprintSpeed;
+	}
 
     private void Rotating()
 	{
@@ -99,9 +163,28 @@ public class NewPlayerControls : MonoBehaviour
 
     private void AdjustDirectionFacing()
 	{
-        Vector3 dir = (cameraPivot.transform.forward * m_moveAmt.y) + (cameraPivot.transform.right * m_moveAmt.x);
-        dir.y = 0;
+        Vector3 faceDir = (cameraPivot.transform.forward * m_moveAmt.y) + (cameraPivot.transform.right * m_moveAmt.x);
+        faceDir.y = 0;
 
-        playerModel.transform.rotation = Quaternion.LookRotation(dir);
+        //Debug.Log(faceDir);
+
+        if(faceDir != Vector3.zero)
+		{
+            playerModel.transform.rotation = Quaternion.LookRotation(faceDir);
+            m_tempFaceDir = faceDir;
+        }
+        else if(faceDir == Vector3.zero && m_tempFaceDir != null)
+		{
+            playerModel.transform.rotation = Quaternion.LookRotation(m_tempFaceDir);
+        }
+		else
+		{
+            playerModel.transform.rotation = Quaternion.LookRotation(faceDir);
+        }
+	}
+
+    private bool Grounded()
+	{
+        return Physics.BoxCast(transform.position, groundCheckBoxSize, Vector3.down, transform.rotation, groundCheckDistance);
 	}
 }
