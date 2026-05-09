@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
 
 public class NewPlayerControls : MonoBehaviour
 {
     //All of the action references for the player IO
+    public PlayerInput pi;
     public InputActionAsset InputActions;
     private InputAction m_moveAction;
     private InputAction m_lookAction;
@@ -90,7 +92,13 @@ public class NewPlayerControls : MonoBehaviour
             m_rigidbody.AddForce(0, gravity, 0);
         }
 
-        if (m_sprintAction.WasReleasedThisFrame())
+        if (pi.actions.FindAction("Sprint").WasPressedThisFrame() /*m_sprintAction.WasReleasedThisFrame()*/)
+        {
+            //Debug.Log("Sprint released!");
+            isSprinting = true;
+        }
+
+        if (pi.actions.FindAction("Sprint").WasReleasedThisFrame() /*m_sprintAction.WasReleasedThisFrame()*/)
         {
             //Debug.Log("Sprint released!");
             isSprinting = false;
