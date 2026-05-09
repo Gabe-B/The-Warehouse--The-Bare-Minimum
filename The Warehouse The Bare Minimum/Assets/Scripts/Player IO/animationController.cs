@@ -13,7 +13,7 @@ public class animControls : MonoBehaviour
         if (rb.linearVelocity.magnitude>0)
         {
             Player.GetComponent<Animator>().Play("walk");
-            Player.GetComponent<Animator>().speed = rb.linearVelocity.magnitude*(1/animationSpeed);
+            //Player.GetComponent<Animator>().speed = rb.linearVelocity.magnitude*(1/animationSpeed);
         }
         if (!(rb.linearVelocity.magnitude>0))
         {
