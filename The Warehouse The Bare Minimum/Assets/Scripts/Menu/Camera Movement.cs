@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class CameraMovement : MonoBehaviour
     private bool _singleHasBeenPressed = false;
     private bool _backHasBeenPressed = false;
     private float elapsedTime;
+
+    public GameObject mainMenuFirstButton, localMenuFirstButton;
 
     //The script uses this to know where to set the camera
     [HideInInspector]
@@ -72,6 +75,9 @@ public class CameraMovement : MonoBehaviour
                 if (!singlePlayerLobbyPanel.activeSelf)
                 {
                     singlePlayerLobbyPanel.SetActive(true);
+
+                    EventSystem.current.SetSelectedGameObject(null);
+                    EventSystem.current.SetSelectedGameObject(localMenuFirstButton);
                 }
             }
         }
@@ -108,6 +114,9 @@ public class CameraMovement : MonoBehaviour
                 if (!mainMenuPanel.activeSelf)
                 {
                     mainMenuPanel.SetActive(true);
+                    
+                    EventSystem.current.SetSelectedGameObject(null);
+                    EventSystem.current.SetSelectedGameObject(mainMenuFirstButton);
                 }
             }
         }
