@@ -10,7 +10,7 @@ public class clockInButton : MonoBehaviour
     //Setting positions for the Lobby Jack
     public GameObject lobbyJack;
     public Transform startPosition,endPosition;
-    private float desiredDuration = 0.75f;
+    private float desiredDuration = .75f;
     private float elapsedTime;
     private bool buttonPressed;
 
