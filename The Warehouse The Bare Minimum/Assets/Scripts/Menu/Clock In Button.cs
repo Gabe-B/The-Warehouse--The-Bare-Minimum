@@ -9,24 +9,25 @@ public class clockInButton : MonoBehaviour
     public List<Scene> maps;
     //Setting positions for the Lobby Jack
     public GameObject lobbyJack;
-    public Transform startPosition,endPosition;
-    private float desiredDuration = .75f;
-    private float elapsedTime;
+    public Transform startPosition, midPosition, endPosition;
+    private float dDTime1 = .75f;
+    private float dDTime2 = .25f;
+    private float elapsedTime, elapsedTime2;
     private bool buttonPressed;
 
     public int randomSeed { get; private set; }
 
 
-	private void Awake()
-	{
+    private void Awake()
+    {
         randomSeed = Mathf.RoundToInt(Random.Range(-2147483648, 2147483648));
 
         Random.InitState(randomSeed);
         buttonPressed = false;
     }
 
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	void Start()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
         for (int i = 1; i < SceneManager.sceneCountInBuildSettings; i++)
         {
@@ -39,28 +40,37 @@ public class clockInButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(buttonPressed == true)
+        if (buttonPressed == true)
         {
             elapsedTime += Time.deltaTime;
-            float percentageComplete = elapsedTime / desiredDuration;
+            float percentageComplete = elapsedTime / dDTime1;
 
-            lobbyJack.transform.position = Vector3.Lerp(startPosition.position,endPosition.position,percentageComplete);
+            lobbyJack.transform.position = Vector3.Lerp(startPosition.position, midPosition.position, percentageComplete);
+            lobbyJack.transform.rotation = Quaternion.Lerp(startPosition.rotation, midPosition.rotation, percentageComplete);
         }
 
-        if(lobbyJack.transform.position == endPosition.position)
+        if (lobbyJack.transform.position == midPosition.position)
         {
-            int randomMap = Random.Range(SceneManager.GetActiveScene().buildIndex + 1, maps.Count + 1);
+            elapsedTime2 += Time.deltaTime;
+            float percentageComplete2 = elapsedTime2 / dDTime2;
 
-            Debug.Log(randomMap);
+            lobbyJack.transform.position = Vector3.Lerp(midPosition.position, endPosition.position, percentageComplete2);
+            lobbyJack.transform.rotation = Quaternion.Lerp(midPosition.rotation, endPosition.rotation, percentageComplete2);
+            // if (lobbyJack.transform.position == endPosition.position)
+            // {
+            //     int randomMap = Random.Range(SceneManager.GetActiveScene().buildIndex + 1, maps.Count + 1);
 
-            SceneManager.LoadScene(randomMap);
+            //     Debug.Log(randomMap);
+
+            //     SceneManager.LoadScene(randomMap);
+            // }
         }
-                
+
     }
-    
+
     public void OnStartPressed()
     {
         buttonPressed = true;
-        
+
     }
 }
