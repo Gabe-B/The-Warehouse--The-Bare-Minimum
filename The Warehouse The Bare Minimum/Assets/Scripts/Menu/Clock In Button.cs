@@ -56,15 +56,15 @@ public class clockInButton : MonoBehaviour
 
             lobbyJack.transform.position = Vector3.Lerp(midPosition.position, endPosition.position, percentageComplete2);
             lobbyJack.transform.rotation = Quaternion.Lerp(midPosition.rotation, endPosition.rotation, percentageComplete2);
-            // if (lobbyJack.transform.position == endPosition.position)
-            // {
-            //     int randomMap = Random.Range(SceneManager.GetActiveScene().buildIndex + 1, maps.Count + 1);
+			if (lobbyJack.transform.position == endPosition.position)
+			{
+				int randomMap = Random.Range(SceneManager.GetActiveScene().buildIndex + 1, maps.Count + 1);
 
-            //     Debug.Log(randomMap);
+				Debug.Log(randomMap);
 
-            //     SceneManager.LoadScene(randomMap);
-            // }
-        }
+				SceneManager.LoadScene(randomMap);
+			}
+		}
 
     }
 
