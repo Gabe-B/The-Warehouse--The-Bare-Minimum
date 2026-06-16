@@ -19,7 +19,7 @@ public class movingCarsL: MonoBehaviour
         if(car.transform.position.z <= -275)
         {
             carTeleport();
-            modSpeed = baseSpeed + (Random.Range(0,6));
+            modSpeed = baseSpeed + Random.Range(0,6);
             textMesh.text = "" + modSpeed;
         }
 
