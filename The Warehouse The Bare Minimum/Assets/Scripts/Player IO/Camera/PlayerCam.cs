@@ -11,7 +11,6 @@ public class PlayerCam : MonoBehaviour
 
     private void Awake()
     {
-
         PlayerInputManager.instance.onPlayerJoined += HandlePlayerJoined;
     }
 
@@ -62,4 +61,9 @@ public class PlayerCam : MonoBehaviour
             cam.rect = new Rect((index % 2) * 0.5f, (index < 2) ? 0.5f : 0f, 0.5f, 0.5f);
 		}
     }
+
+    public void OnSpawn()
+	{
+
+	}
 }

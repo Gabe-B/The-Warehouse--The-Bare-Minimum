@@ -19,6 +19,8 @@ public class CameraMovement : MonoBehaviour
 
     public GameObject mainMenuFirstButton, localMenuFirstButton;
 
+    public PlayerSpawn p;
+
     //The script uses this to know where to set the camera
     [HideInInspector]
     public enum MENU_SCREEN
@@ -45,9 +47,6 @@ public class CameraMovement : MonoBehaviour
         //If the single player button was pressed the the current camera position is on the main menu
         if(_singleHasBeenPressed && currentScreen == MENU_SCREEN.Main)
 		{
-            //Enables the ability for the game object to be interacted with
-            //gameObject.GetComponent<Image>().raycastTarget = true;
-
             //The next few lines here handle the smooth transition from one camera position to the next
             elapsedTime += Time.deltaTime;
             float percentLerpComplete = elapsedTime / transitionTime;
@@ -84,9 +83,6 @@ public class CameraMovement : MonoBehaviour
         //If the back button was pressed on the single player screen
 		else if (_backHasBeenPressed && currentScreen == MENU_SCREEN.Single)
 		{
-            //Disables the ability for the game object to be interacted with
-            //gameObject.GetComponent<Image>().raycastTarget = false;
-
             //The next few lines here handle the smooth transition from one camera position to the next
             elapsedTime += Time.deltaTime;
             float percentLerpComplete = elapsedTime / transitionTime;
