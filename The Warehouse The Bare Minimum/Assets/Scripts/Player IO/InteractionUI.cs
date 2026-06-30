@@ -13,11 +13,13 @@ public class InteractionUI : MonoBehaviour
     public int throwStrength;
     public GameObject srObject, jrObject, player;
     public Rigidbody rb;
+    public NewPlayerControls npc;
 
     void Start()
     {
         inZone = inHand = false;
         srObject = jrObject = null;
+
     }
 
 
@@ -45,17 +47,16 @@ public class InteractionUI : MonoBehaviour
 
     void Update()
     {
-
         if (srObject.transform.parent != null && srObject.transform.parent.CompareTag("player")) //Keeps Object in same rotation as the player
         {
             srObject.transform.rotation = Quaternion.Euler(player.transform.localEulerAngles);
             Debug.Log("You're currently holding "+(srObject.name)+" put it down to interact again.");
         }
-        if (inZone && Input.GetKeyDown("e")) //if you're in zone and you press e
+        if (inZone && npc.pi.actions.FindAction("Interact").WasPressedThisFrame()) //if you're in zone and you press e
         {
             pickUp();
         }
-        if (inHand && Input.GetKeyDown("q")) //Throw Object
+        if (inHand && npc.pi.actions.FindAction("Throw").WasPressedThisFrame()) //Throw Object
         {
             putDown();
         }
@@ -93,12 +94,4 @@ public class InteractionUI : MonoBehaviour
         jrObject.gameObject.GetComponent<SphereCollider>().enabled = true;
     }
 }
-// check compare tag of srObject to get the type of interaction
-
 //Current Bugs needed to be fixed
-
-//Single player
-//When the product is in the carry out collection zone you can still throw the product (reason: the inhand bool is set to true)
-
-//Multi player
-//If player 1 has an item inhand and player 2 pressed the throw button the item is thrown (possible reason: bools are built into a prefab/ the bools are set to public)(collision statements are only checking to see if something with the player tag is  )w
