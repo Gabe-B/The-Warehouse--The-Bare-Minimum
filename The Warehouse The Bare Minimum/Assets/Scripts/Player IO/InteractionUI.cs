@@ -6,8 +6,7 @@ using Unity.Mathematics;
 
 public class InteractionUI : MonoBehaviour
 {
-    public TextMeshProUGUI textMesh, xtext, ytext, ztext;
-
+    public TextMeshProUGUI textMesh;
     //Bool for interaction zone and holding check
     public bool inZone, inHand;
     private int placeHolder;
@@ -36,8 +35,7 @@ public class InteractionUI : MonoBehaviour
             }
         }
     }
-    //The player leaves an interaction zone
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other) //The player leaves an interaction zone
     {
         if (other.gameObject.CompareTag("interUI"))
         {
@@ -48,9 +46,10 @@ public class InteractionUI : MonoBehaviour
     void Update()
     {
 
-        if (inHand) //Keeps Object in same rotation as the player
+        if (srObject.transform.parent != null && srObject.transform.parent.CompareTag("player")) //Keeps Object in same rotation as the player
         {
             srObject.transform.rotation = Quaternion.Euler(player.transform.localEulerAngles);
+            Debug.Log("You're currently holding "+(srObject.name)+" put it down to interact again.");
         }
         if (inZone && Input.GetKeyDown("e")) //if you're in zone and you press e
         {
@@ -59,10 +58,6 @@ public class InteractionUI : MonoBehaviour
         if (inHand && Input.GetKeyDown("q")) //Throw Object
         {
             putDown();
-        }
-        if (srObject.transform.parent != null)//Checking to see if an item is being held 
-        {
-            Debug.Log("You're currently inHand something, put it down to interact again.");
         }
     }
 
@@ -73,22 +68,20 @@ public class InteractionUI : MonoBehaviour
         {
             inHand = true;
             //Put whatever interaction is needed after this comment
-            placeHolder += 1;
-            textMesh.text = placeHolder.ToString();
-
             //Prevent being able to interect again while inHand the interactable
             jrObject.gameObject.GetComponent<MeshRenderer>().enabled = false;
             jrObject.gameObject.GetComponent<SphereCollider>().enabled = false;
+            //turning objects physics off
             rb.isKinematic = true;
             inZone = false;
-
             //Pick up the object
             srObject.transform.SetParent(transform, worldPositionStays: true);
-            srObject.transform.localPosition = new Vector3(0, 10, 0);
+            srObject.transform.localPosition = new Vector3(0, 7.5f, 0);
         }
     }
     void putDown()
     {
+        //Turning object physics on
         rb.isKinematic = false;
         rb.AddForce(player.transform.forward * throwStrength, ForceMode.Impulse); //get angle of player & add force 
         //Disassociate object from the player 
@@ -101,3 +94,11 @@ public class InteractionUI : MonoBehaviour
     }
 }
 // check compare tag of srObject to get the type of interaction
+
+//Current Bugs needed to be fixed
+
+//Single player
+//When the product is in the carry out collection zone you can still throw the product (reason: the inhand bool is set to true)
+
+//Multi player
+//If player 1 has an item inhand and player 2 pressed the throw button the item is thrown (possible reason: bools are built into a prefab/ the bools are set to public)(collision statements are only checking to see if something with the player tag is  )w
