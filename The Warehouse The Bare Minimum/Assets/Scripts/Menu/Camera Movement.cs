@@ -6,19 +6,29 @@ using UnityEngine.EventSystems;
 
 public class CameraMovement : MonoBehaviour
 {
+    //The camera object
     public GameObject mainCamera;
+
+    //The start and single player positions for the camera for the main menu scene
     public Transform camStartPosition, camSinglePlayerPosition;
+
+    //How long it takes to transition between points
     public float transitionTime;
 
+    //Panel holding the main menu
     public GameObject mainMenuPanel;
+
+    //Panel holding the single player
     public GameObject singlePlayerLobbyPanel;
 
     private bool _singleHasBeenPressed = false;
     private bool _backHasBeenPressed = false;
     private float elapsedTime;
 
+    //What buttons are highlighted first for controllers
     public GameObject mainMenuFirstButton, localMenuFirstButton;
 
+    //Where the player obejct spawns
     public PlayerSpawn p;
 
     //The script uses this to know where to set the camera
