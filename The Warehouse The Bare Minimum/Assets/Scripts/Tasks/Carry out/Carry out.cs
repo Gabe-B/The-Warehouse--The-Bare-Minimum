@@ -24,3 +24,4 @@ public class carryOut : MonoBehaviour
     }
     //Add a random chance of recieving a tip from a customer
 }
+//When walking an object into zone, instead of throwing, the objects inhand bool isnt turned off. This gives the player the ability to still "throw" the item when it is in the collection one
