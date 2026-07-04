@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class onlineOrdersManager : MonoBehaviour
+public class onlineOrdersManager : IndividualTaskManager
 {
-    public bool taskActive;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public Task pairedOnlineOrder;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void StartTask()
+	{
+		base.StartTask();
+
+		pairedOnlineOrder.StartingTask();
+	}
+
+	public override void EndTask()
+	{
+		base.EndTask();
+
+		pairedOnlineOrder.EndingTask();
+	}
 }

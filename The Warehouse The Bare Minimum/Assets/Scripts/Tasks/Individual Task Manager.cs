@@ -3,17 +3,18 @@ using UnityEngine;
 public class IndividualTaskManager : MonoBehaviour
 {
 	public new string name;
+	public bool hasBeenSelected = false;
 
-	private void OnEnable()
+	public virtual void OnEnable()
 	{
-        masterTaskManager.TaskStart += StartTask;
-		masterTaskManager.TaskEnd += EndTask;
+  //      masterTaskManager.TaskStart += StartTask;
+		//masterTaskManager.TaskEnd += EndTask;
     }
 
-	private void OnDisable()
+	public virtual void OnDisable()
 	{
-		masterTaskManager.TaskStart -= StartTask;
-		masterTaskManager.TaskEnd -= EndTask;
+		//masterTaskManager.TaskStart -= StartTask;
+		//masterTaskManager.TaskEnd -= EndTask;
 	}
 
     public virtual void StartTask()
