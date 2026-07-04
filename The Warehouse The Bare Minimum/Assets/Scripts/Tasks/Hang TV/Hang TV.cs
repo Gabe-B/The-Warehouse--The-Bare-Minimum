@@ -1,10 +1,20 @@
 using UnityEngine;
 
-public class hangTV : MonoBehaviour
+public class hangTV : Task
 {
     public GameObject twoArms;
     public float mouseX;
     public float mouseY;
+
+    public override void StartingTask()
+    {
+        Debug.Log("The carryout has begun");
+    }
+
+    public override void EndingTask()
+    {
+        Debug.Log("The carryout has ended");
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
