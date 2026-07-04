@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class hangTvManager : MonoBehaviour
+public class hangTvManager : IndividualTaskManager
 {
-    public bool taskActive;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	public Task pairedTVHangTask;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void StartTask()
+	{
+		base.StartTask();
+
+		pairedTVHangTask.StartingTask();
+	}
+
+	public override void EndTask()
+	{
+		base.EndTask();
+
+		pairedTVHangTask.EndingTask();
+	}
 }

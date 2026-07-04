@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class cartRunManager : MonoBehaviour
+public class cartRunManager : IndividualTaskManager
 {
-    public bool taskActive;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public Task pairedCartRun;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void StartTask()
+	{
+		base.StartTask();
+
+		pairedCartRun.StartingTask();
+	}
+
+	public override void EndTask()
+	{
+		base.EndTask();
+
+		pairedCartRun.EndingTask();
+	}
 }

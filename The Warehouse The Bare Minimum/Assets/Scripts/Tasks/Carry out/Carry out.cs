@@ -1,11 +1,22 @@
 using UnityEngine;
 
-public class carryOut : MonoBehaviour
+public class carryOut : Task
 {
-    public Rigidbody rb;
-    public InteractionUI interUI;
-    //If product is in zone then its collected and the customer can take off
-    void OnTriggerEnter(Collider other)
+    private Rigidbody rb;
+    private InteractionUI interUI;
+
+    public override void StartingTask()
+	{
+        Debug.Log("The carryout has begun");
+	}
+
+    public override void EndingTask()
+	{
+        Debug.Log("The carryout has ended");
+    }
+
+	//If product is in zone then its collected and the customer can take off
+	void OnTriggerEnter(Collider other)
     {
         //finds the rigid body of the product
         GameObject interactionZone = other.transform.GetChild(0).gameObject;

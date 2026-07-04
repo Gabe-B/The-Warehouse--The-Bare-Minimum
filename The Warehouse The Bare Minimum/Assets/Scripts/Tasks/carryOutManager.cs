@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class carryOutManager : MonoBehaviour
+public class carryOutManager : IndividualTaskManager
 {
-    public bool taskActive;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	public Task pairedCarryout;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void StartTask()
+	{
+		base.StartTask();
+
+		pairedCarryout.StartingTask();
+	}
+
+	public override void EndTask()
+	{
+		base.EndTask();
+
+		pairedCarryout.EndingTask();
+	}
 }

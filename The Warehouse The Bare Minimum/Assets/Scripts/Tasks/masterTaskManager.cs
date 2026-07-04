@@ -3,24 +3,34 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 
-public class taskManager : MonoBehaviour
+public class masterTaskManager : MonoBehaviour
 {
-    public List<GameObject> taskList = new List<GameObject>();
-    public List<GameObject> activeTasks = new List<GameObject>();
+    public delegate void Task();
+    public static Task TaskStart;
+    public static Task TaskEnd;
+
+    //public List<GameObject> taskList = new List<GameObject>();
+    public List<IndividualTaskManager> taskManagerList;
+    //public List<GameObject> activeTasks = new List<GameObject>();
     public Dictionary<string,int> counts = new Dictionary<string, int>();
     public GameObject taskSelected;
 
     //setting references to scripts | first letter of each word of task
-    public carryOutManager coRef;
-    public cartRunManager crRef;
-    public laserLineManager llRef;
-    public onlineOrdersManager ooRef;
-    public helpCustomersManager hcRef;
-    public hangTvManager htRef;
+    //public carryOutManager coRef;
+    //public cartRunManager crRef;
+    //public laserLineManager llRef;
+    //public onlineOrdersManager ooRef;
+    //public helpCustomersManager hcRef;
+    //public hangTvManager htRef;
 
     //Run the task initializing setup
     void Start()
     {
+        foreach (IndividualTaskManager itm in FindObjectsOfType<IndividualTaskManager>())
+		{
+            taskManagerList.Add(itm);
+		}
+
         givingTasks();
     }
 
@@ -37,48 +47,48 @@ public class taskManager : MonoBehaviour
         //Looping through the list to find the initial tasks 
         for (int i = 0; i < initTaskCount; i++)
         {
-            int randomIndex = Random.Range(0, taskList.Count);
-            taskSelected = taskList[randomIndex];
-            string taskName = taskList[randomIndex].name;
+            int randomIndex = Random.Range(0,  taskManagerList.Count/*taskList.Count*/);
+			taskSelected = taskManagerList[randomIndex].gameObject;
+            string taskName = taskSelected.name;
 
             //Access gameobject script and change the bool activating that tasks manager script
             if (taskName == "Cart Run")
             {
-                crRef.taskActive = true;
+                TaskStart += taskManagerList[randomIndex].StartTask;
             }
             if (taskName == "Carry Out")
             {
-                coRef.taskActive = true;
+                TaskStart += taskManagerList[randomIndex].StartTask;
             }
             if (taskName == "Laser Line")
             {
-                llRef.taskActive = true;
+                TaskStart += taskManagerList[randomIndex].StartTask;
             }
             if (taskName == "Help Customer")
             {
-                hcRef.taskActive = true;
+                TaskStart += taskManagerList[randomIndex].StartTask;
             }
             if (taskName == "Hang TV")
             {
-                htRef.taskActive = true;
+                TaskStart += taskManagerList[randomIndex].StartTask;
             }
             if (taskName == "Online Order")
             {
-                ooRef.taskActive = true;
+                TaskStart += taskManagerList[randomIndex].StartTask;
             }
 
             //Add gameobject to activetask list
-            activeTasks.Add(taskSelected);
-        }
+            //activeTasks.Add(taskSelected);
+		}
 
         //Count quantity of each unique item in active task list (can be rewritten easily had to google)
-        foreach (var item in activeTasks)
-        {
-            counts[item.name] = counts.TryGetValue(item.name, out int count) ? count + 1 : 1;
-            Debug.Log(counts[item.name]+"X "+item.name);
-        }
-        //Shows total active tasks
-        Debug.Log(activeTasks.Count);
+        //foreach (var item in activeTasks)
+        //{
+        //    counts[item.name] = counts.TryGetValue(item.name, out int count) ? count + 1 : 1;
+        //    Debug.Log(counts[item.name]+"X "+item.name);
+        //}
+        ////Shows total active tasks
+        //Debug.Log(activeTasks.Count);
     }
 }
 //get random number n of initial tasks

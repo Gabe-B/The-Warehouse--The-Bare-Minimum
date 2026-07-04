@@ -17544,13 +17544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92fdf1888d796b74ca20d2c4bf6d3764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::taskManager
-  taskList:
-  - {fileID: 1055168912}
-  - {fileID: 1788952437}
-  - {fileID: 843075356}
-  - {fileID: 613446789}
-  - {fileID: 1526850059}
-  - {fileID: 1833353198}
+  taskManagerList: []
   activeTasks: []
   taskSelected: {fileID: 0}
   coRef: {fileID: 843075358}
@@ -22366,7 +22360,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -150, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1639475591}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &843075358
@@ -22381,7 +22376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91c5d5ab3291ec46822b6fc0d8fa3fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::carryOutManager
-  taskActive: 0
+  name: Carry Out
+  pairedCarryout: {fileID: 1639475592}
 --- !u!1 &845160823
 GameObject:
   m_ObjectHideFlags: 0
@@ -32065,6 +32061,50 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1420493302}
   m_SourcePrefab: {fileID: 100100000, guid: 9836e5b55e6793c4ca450625107e211e, type: 3}
+--- !u!1 &1639475590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1639475591}
+  - component: {fileID: 1639475592}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1639475591
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639475590}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 843075357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1639475592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639475590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dc6583bf27448242af655929ff1c556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::carryOut
 --- !u!4 &1640858418 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9836e5b55e6793c4ca450625107e211e, type: 3}
