@@ -29,5 +29,4 @@ public class recyclingTime : MonoBehaviour
     }
 }
 
-//Trash isnt being destroyed when thrown into the recycle zone (reason: unknown Solution: remove it temporarily)
-//When walking an object into zone, instead of throwing, the objects inhand bool isnt turned off. This gives the player the ability to still "throw" the item when it is in the collection one
+//When walking an object into zone, instead of throwing, the objects inhand bool isnt turned off. This gives the player the ability to still "throw" the item when it is in the collection one preventing you from ever pikcing anything up again.
