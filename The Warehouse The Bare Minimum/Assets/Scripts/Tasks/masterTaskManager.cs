@@ -40,7 +40,7 @@ public class masterTaskManager : MonoBehaviour
         //Ends the tasks and handlers
         if (Input.GetKeyDown(KeyCode.H))
 		{
-            endTask();
+            endAllTask();
             ClearTaskHandlers();
 		}
     }
@@ -48,7 +48,7 @@ public class masterTaskManager : MonoBehaviour
     void givingTasks()
     {
         //Getting random number for initial tasks
-        int initTaskCount = Random.Range(3, 5);
+        int initTaskCount = 1;//Random.Range(3, 5);
 
         //Clears list from last run
         selectedTaskManagers.Clear();
@@ -82,7 +82,7 @@ public class masterTaskManager : MonoBehaviour
     }
 
     //Marks each selected task as unselected
-    void endTask()
+    void endAllTask()
 	{
         foreach (IndividualTaskManager itm in selectedTaskManagers)
 		{

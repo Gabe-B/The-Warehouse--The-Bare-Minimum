@@ -2,46 +2,80 @@ using UnityEngine;
 
 public class boxManager : MonoBehaviour
 {
-    //Setting object references to variables
-    public GameObject productContainer;
-    public GameObject productBox;
+    public BoxCollider productContainer;
     public GameObject boxZone;
-    public GameObject shelf;
-    private
-    void OnTriggerEnter(Collider collision)
+
+    [HideInInspector]
+    public bool b_isDirty = false;
+
+    private Vector3 v_dirtyPosition, v_startPosition;
+
+    private Quaternion q_startRot;
+
+    private bool b_hasBeenDirtied = false;
+
+	private void Start()
+	{
+        productContainer = GetComponent<BoxCollider>();
+
+        if(productContainer == null)
+		{
+            Debug.Log($"THIS {gameObject.name} PRODUCT HAS NOT HITBOX");
+		}
+
+        q_startRot = transform.localRotation;
+
+        v_startPosition = transform.localPosition;
+	}
+
+	void Update()
     {
-        if (collision.gameObject.CompareTag("player")&&(productBox.gameObject.tag == "dirty"))
+        if (b_isDirty)
         {
-            //Changing box to clean state
-            productBox.tag = "clean";
+            if(!b_hasBeenDirtied)
+			{
+                dState();
+
+                b_hasBeenDirtied = true;
+            }
         }
-    }
-    void FixedUpdate()
-    {
-        if (productBox.tag == "clean")
+        else
         {
             cState();
         }
-        if (productBox.tag == "dirty")
+    }
+
+    void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("player") && b_isDirty)
         {
-            dState();
+            //Changing box to clean state
+            b_isDirty = false;
         }
     }
+
     void cState()
     {
         //Changing the local position of the box to the clean state
-        productBox.transform.localPosition = new Vector3 (0,0,-.5f);
+        transform.localPosition = v_startPosition;
+        transform.rotation = q_startRot;
         //Disabling the product boxes collision box and hiding the product zone
-        productContainer.GetComponent<BoxCollider>().enabled = false;
+        productContainer.enabled = false;
         boxZone.GetComponent<MeshRenderer>().enabled = false;
+        b_hasBeenDirtied = false;
     }
 
     void dState()
     {
+        v_dirtyPosition = new Vector3(Random.Range(transform.localPosition.x - 2f, transform.localPosition.x + 2f), transform.localPosition.y, Random.Range(transform.localPosition.z - 2f, transform.localPosition.z + 2f));
+
         //Changing the local position of the box to the clean state
-        productBox.transform.localPosition = new Vector3 (0,0,-6.75f);
+        transform.localPosition = v_dirtyPosition;
+
+        transform.rotation = Quaternion.Euler(q_startRot.x, Random.Range(-25, 25), q_startRot.z);
+
         //Enabling the product boxes collision box and displaying the product zone
-        productContainer.GetComponent<BoxCollider>().enabled = true;
+        productContainer.enabled = true;
         boxZone.GetComponent<MeshRenderer>().enabled = true;
     }
 }
