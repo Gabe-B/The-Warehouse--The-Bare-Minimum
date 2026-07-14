@@ -1,17 +1,27 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class shelfManager : MonoBehaviour
+public class shelfManager : Task
 {
-    public GameObject prOne;
-    public GameObject prTwo;
-    public GameObject prThree;
-    public GameObject prFour;
-    
-    void Start()
+    public List<boxManager> boxes;
+
+    [HideInInspector]
+    private bool b_isComplete;
+
+    public override void StartingTask()
     {
-        prOne.tag = "dirty";
-        prTwo.tag = "dirty";
-        prThree.tag = "dirty";
-        prFour.tag = "dirty";
+        Debug.Log("The laser line has begun");
+        
+        foreach(boxManager b in boxes)
+		{
+            b.b_isDirty = true;
+		}
+
+        b_isComplete = false;
+    }
+
+    public override void EndingTask()
+    {
+        Debug.Log("The laser line has ended");
     }
 }

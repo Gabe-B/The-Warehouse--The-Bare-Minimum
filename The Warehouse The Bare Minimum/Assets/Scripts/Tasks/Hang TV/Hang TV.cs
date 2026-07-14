@@ -8,12 +8,12 @@ public class hangTV : Task
 
     public override void StartingTask()
     {
-        Debug.Log("The carryout has begun");
+        Debug.Log("The TV hanging task has begun");
     }
 
     public override void EndingTask()
     {
-        Debug.Log("The carryout has ended");
+        Debug.Log("The TV hanging task has ended");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

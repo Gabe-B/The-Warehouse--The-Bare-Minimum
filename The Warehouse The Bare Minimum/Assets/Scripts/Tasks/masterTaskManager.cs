@@ -5,94 +5,98 @@ using UnityEngine.ProBuilder;
 
 public class masterTaskManager : MonoBehaviour
 {
-    public delegate void Task();
-    public static Task TaskStart;
-    public static Task TaskEnd;
+    public delegate void TaskHandler();
+    public static TaskHandler TaskStart;
+    public static TaskHandler TaskEnd;
 
-    //public List<GameObject> taskList = new List<GameObject>();
-    public List<IndividualTaskManager> taskManagerList;
-    //public List<GameObject> activeTasks = new List<GameObject>();
-    public Dictionary<string,int> counts = new Dictionary<string, int>();
-    public GameObject taskSelected;
+    public List<IndividualTaskManager> taskManagerList, selectedTaskManagers;
+    public GameObject taskSelectedObj;
 
-    //setting references to scripts | first letter of each word of task
-    //public carryOutManager coRef;
-    //public cartRunManager crRef;
-    //public laserLineManager llRef;
-    //public onlineOrdersManager ooRef;
-    //public helpCustomersManager hcRef;
-    //public hangTvManager htRef;
-
-    //Run the task initializing setup
-    void Start()
+	//Run the task initializing setup
+	void Start()
     {
+        //Gets each instance of the task managers
         foreach (IndividualTaskManager itm in FindObjectsOfType<IndividualTaskManager>())
 		{
             taskManagerList.Add(itm);
 		}
-
-        givingTasks();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Selects tasks to be done
+        if (Input.GetKeyDown(KeyCode.L))
+		{
+            givingTasks();
+		}
 
+        //Starts the tasks
+        if (Input.GetKeyDown(KeyCode.K))
+		{
+            TaskStart.Invoke();
+        }
+
+        //Ends the tasks and handlers
+        if (Input.GetKeyDown(KeyCode.H))
+		{
+            endAllTask();
+            ClearTaskHandlers();
+		}
     }
 
     void givingTasks()
     {
         //Getting random number for initial tasks
-        int initTaskCount = Random.Range(3, 6);
+        int initTaskCount = 1;//Random.Range(3, 5);
+
+        //Clears list from last run
+        selectedTaskManagers.Clear();
+
+        //Debug.Log($"The number of selected tasks is {initTaskCount}");
+
         //Looping through the list to find the initial tasks 
         for (int i = 0; i < initTaskCount; i++)
         {
-            int randomIndex = Random.Range(0,  taskManagerList.Count/*taskList.Count*/);
-			taskSelected = taskManagerList[randomIndex].gameObject;
-            string taskName = taskSelected.name;
+            //Gets a random task from the list
+            int randomIndex = Random.Range(0,  taskManagerList.Count);
+			taskSelectedObj = taskManagerList[randomIndex].gameObject;
 
-            //Access gameobject script and change the bool activating that tasks manager script
-            if (taskName == "Cart Run")
-            {
-                TaskStart += taskManagerList[randomIndex].StartTask;
-            }
-            if (taskName == "Carry Out")
-            {
-                TaskStart += taskManagerList[randomIndex].StartTask;
-            }
-            if (taskName == "Laser Line")
-            {
-                TaskStart += taskManagerList[randomIndex].StartTask;
-            }
-            if (taskName == "Help Customer")
-            {
-                TaskStart += taskManagerList[randomIndex].StartTask;
-            }
-            if (taskName == "Hang TV")
-            {
-                TaskStart += taskManagerList[randomIndex].StartTask;
-            }
-            if (taskName == "Online Order")
-            {
-                TaskStart += taskManagerList[randomIndex].StartTask;
+            //Checks if individual task has already been selected and rerolls if it has (there can be multiple instances of the same task)
+            while (selectedTaskManagers.Contains(taskSelectedObj.GetComponent<IndividualTaskManager>()))
+			{
+                randomIndex = Random.Range(0, taskManagerList.Count);
+                taskSelectedObj = taskManagerList[randomIndex].gameObject;
             }
 
-            //Add gameobject to activetask list
-            //activeTasks.Add(taskSelected);
+            //Double checks that the task wasn't selected previously and adds it to the selected list. Also adds the "StartTask" event to the handler
+            if (taskSelectedObj.GetComponent<IndividualTaskManager>().hasBeenSelected == false)
+			{
+                selectedTaskManagers.Add(taskSelectedObj.GetComponent<IndividualTaskManager>());
+                selectedTaskManagers[i].hasBeenSelected = true;
+
+                //Debug.Log($"{selectedTaskManagers[i]} has been selected");
+                TaskStart += selectedTaskManagers[i].StartTask;
+            }
 		}
-
-        //Count quantity of each unique item in active task list (can be rewritten easily had to google)
-        //foreach (var item in activeTasks)
-        //{
-        //    counts[item.name] = counts.TryGetValue(item.name, out int count) ? count + 1 : 1;
-        //    Debug.Log(counts[item.name]+"X "+item.name);
-        //}
-        ////Shows total active tasks
-        //Debug.Log(activeTasks.Count);
     }
+
+    //Marks each selected task as unselected
+    void endAllTask()
+	{
+        foreach (IndividualTaskManager itm in selectedTaskManagers)
+		{
+            itm.hasBeenSelected = false;
+		}
+	}
+
+    //Clears the handlers
+    void ClearTaskHandlers()
+	{
+        foreach (IndividualTaskManager itm in selectedTaskManagers)
+		{
+            TaskStart -= itm.StartTask;
+            TaskEnd -= itm.EndTask;
+		}
+	}
 }
-//get random number n of initial tasks
-//loop through the list of tasks n number of times each time picking a random task
-//Access the gameobjects script and changing its activeTask bool to true
-//and adding the task to the activetasks list
-//if a task gets completed find it in the activetasks list change the bool to false and remove it from the list
