@@ -7,7 +7,8 @@ public class recyclingTime : MonoBehaviour
     public Rigidbody rb;
     public InteractionUI interUI;
     public TextMeshProUGUI textMesh;
-    public int recycleTotal,recycleLeft; 
+    public int recycleTotal, recycleLeft;
+
     //If product is in zone then its collected and the customer can take off
     void OnTriggerEnter(Collider other)
     {

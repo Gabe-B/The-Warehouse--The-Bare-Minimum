@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class truck : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //Pick a random shelf similar to laser line task
+    //change items on shelf the the same dirty state
+    //When players walks into zone and presses interact, destroys the product in the players hand and change the item on shelf to clean state 
 }
+    
