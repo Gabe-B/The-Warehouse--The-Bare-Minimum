@@ -1,19 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class shelfManager : Task
 {
-    public GameObject prOne;
-    public GameObject prTwo;
-    public GameObject prThree;
-    public GameObject prFour;
+    public List<boxManager> boxes;
+
+    [HideInInspector]
+    private bool b_isComplete;
 
     public override void StartingTask()
     {
         Debug.Log("The laser line has begun");
-        //prOne.tag = "dirty";
-        //prTwo.tag = "dirty";
-        //prThree.tag = "dirty";
-        //prFour.tag = "dirty";
+        
+        foreach(boxManager b in boxes)
+		{
+            b.b_isDirty = true;
+		}
+
+        b_isComplete = false;
     }
 
     public override void EndingTask()
