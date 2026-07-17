@@ -2364,6 +2364,7 @@ GameObject:
   - component: {fileID: 4409170239080527417}
   - component: {fileID: -8377522949599985647}
   - component: {fileID: 8937006556683849928}
+  - component: {fileID: 5763865321595214872}
   m_Layer: 0
   m_Name: New Player
   m_TagString: player
@@ -2570,27 +2571,43 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8236070782341004144}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c1c8bbf33238774e894d8aa349dbb1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionUI
   textMesh: {fileID: 9219284712184413368}
-  inZone: 0
-  inHand: 0
-  srObject: {fileID: 0}
-  jrObject: {fileID: 0}
+  interItem: {fileID: 0}
+  interZone: {fileID: 0}
   player: {fileID: 4009348709221842641}
   rb: {fileID: 0}
   npc: {fileID: 4409170239080527417}
-  timeStart: 0
-  timeNow: 0
-  timeEnd: 0
-  timeDiff: 0
-  strengthMulti: 0
-  throwStrength: 50
-  holdThreshold: 1
   holdParent: {fileID: 2609529822126377538}
+  inZone: 0
+  inHand: 0
+  throwStrength: 50
+--- !u!114 &5763865321595214872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236070782341004144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 374f020e4cd85a64899dcb27abe9df9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::interactionScript
+  interItem: {fileID: 0}
+  interZone: {fileID: 0}
+  player: {fileID: 0}
+  rb: {fileID: 0}
+  npc: {fileID: 4409170239080527417}
+  holdParent: {fileID: 2609529822126377538}
+  inZone: 0
+  inHand: 0
+  heldItems: []
+  spaceMulti: 5
 --- !u!1 &8731117564151970655
 GameObject:
   m_ObjectHideFlags: 0
