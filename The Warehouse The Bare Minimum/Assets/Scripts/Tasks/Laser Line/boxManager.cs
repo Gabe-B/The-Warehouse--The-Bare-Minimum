@@ -5,14 +5,13 @@ public class boxManager : MonoBehaviour
     public BoxCollider productContainer;
     public GameObject boxZone;
 
-    [HideInInspector]
     public bool b_isDirty = false;
+    public bool b_hasBeenDirtied = false;
+    public bool b_hasBeenCleaned = false;
 
     private Vector3 v_dirtyPosition, v_startPosition;
 
     private Quaternion q_startRot;
-
-    private bool b_hasBeenDirtied = false;
 
 	private void Start()
 	{
@@ -42,6 +41,8 @@ public class boxManager : MonoBehaviour
         else
         {
             cState();
+
+            b_hasBeenCleaned = true;
         }
     }
 

@@ -4,6 +4,7 @@ public class IndividualTaskManager : MonoBehaviour
 {
 	public new string name;
 	public bool hasBeenSelected = false;
+	public bool hasBeenCompleted = false;
 
 	public virtual void OnEnable()
 	{

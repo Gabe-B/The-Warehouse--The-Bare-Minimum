@@ -7,7 +7,6 @@ public class masterTaskManager : MonoBehaviour
 {
     public delegate void TaskHandler();
     public static TaskHandler TaskStart;
-    public static TaskHandler TaskEnd;
 
     public List<IndividualTaskManager> taskManagerList, selectedTaskManagers;
     public GameObject taskSelectedObj;
@@ -43,7 +42,27 @@ public class masterTaskManager : MonoBehaviour
             endAllTask();
             ClearTaskHandlers();
 		}
+
+        UpdateTaskStatus();
     }
+
+    void UpdateTaskStatus()
+	{
+        if(selectedTaskManagers.Count > 0)
+		{
+            foreach (IndividualTaskManager itm in selectedTaskManagers)
+            {
+                Debug.Log($"im here: {itm.hasBeenCompleted}");
+                if (itm.hasBeenCompleted)
+				{
+                    Debug.Log($"removing completed task: {itm.name}");
+                    TaskStart -= itm.StartTask;
+                    itm.hasBeenSelected = false;
+                    selectedTaskManagers.Remove(itm);
+				}
+            }
+        }
+	}
 
     void givingTasks()
     {
@@ -96,7 +115,6 @@ public class masterTaskManager : MonoBehaviour
         foreach (IndividualTaskManager itm in selectedTaskManagers)
 		{
             TaskStart -= itm.StartTask;
-            TaskEnd -= itm.EndTask;
 		}
 	}
 }
