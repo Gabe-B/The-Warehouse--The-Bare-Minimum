@@ -7,20 +7,19 @@ using NUnit.Framework;
 
 public class InteractionUI : MonoBehaviour
 {
-    public TextMeshProUGUI textMesh;
-    //Bool for interaction zone and holding check
-    public bool inZone, inHand;
-    private int placeHolder;
-    public GameObject srObject, jrObject, player;
+    public TextMeshProUGUI textMesh;// not needed delete this
+    public GameObject interItem, interZone, player;
     public Rigidbody rb;
     public NewPlayerControls npc;
-    public float timeStart, timeNow, timeEnd, timeDiff, strengthMulti, throwStrength, holdThreshold;
     public Transform holdParent;
+    public bool inZone, inHand;
+    private float timeStart, timeNow, timeEnd, strengthMulti;
+    public float throwStrength; // can privatize some and remove some
 
     void Start()
     {
         inZone = inHand = false;
-        srObject = jrObject = null;
+        interItem = interZone = null;
         textMesh.text = null;
     }
 
@@ -32,16 +31,16 @@ public class InteractionUI : MonoBehaviour
             inZone = true;
             if (!inHand)
             {
-                //Addressing the parent object of the interaction zone
-                srObject = other.gameObject.transform.parent.gameObject;
-                jrObject = other.gameObject;
-                rb = srObject.gameObject.GetComponent<Rigidbody>();
+                //Getting References to objects
+                interItem = other.gameObject.transform.parent.gameObject; // This is the actual object
+                interZone = other.gameObject; // This is the interaction sphere around the actual object
+                rb = interItem.gameObject.GetComponent<Rigidbody>(); // This is the rigidbody of the actual object
             }
         }
     }
     void OnTriggerExit(Collider other) //The player leaves an interaction zone
     {
-        if (other.gameObject.CompareTag("interUI"))
+        if (other.gameObject.CompareTag("interUI"))//if nothings in hand and you leave zone all references to interaction objects should be set to null but if you in two interaction zones at the same time it will cause issues
         {
             inZone = false;
         }
@@ -49,10 +48,10 @@ public class InteractionUI : MonoBehaviour
 
     void Update()
     {
-        // if (srObject.transform.parent != null && srObject.transform.parent.CompareTag("player")) //Keeps Object in same rotation as the player
+        // if (interItem.transform.parent != null && interItem.transform.parent.CompareTag("player")) //Keeps Object in same rotation as the player
         // {
-        //     srObject.transform.rotation = Quaternion.Euler(player.transform.localEulerAngles);
-        //     Debug.Log("You're currently holding " + (srObject.name) + " put it down to interact again.");
+        //     interItem.transform.rotation = Quaternion.Euler(player.transform.localEulerAngles);
+        //     Debug.Log("You're currently holding " + (interItem.name) + " put it down to interact again.");
         // }
         if (inZone && npc.pi.actions.FindAction("Interact").WasPressedThisFrame()) //if you're in zone and you press e
         {
@@ -62,32 +61,26 @@ public class InteractionUI : MonoBehaviour
         //Throw mechanics
         if (inHand && npc.pi.actions.FindAction("Throw").WasPressedThisFrame()) //Set Time start
         {
-            timeStart = Time.time;
-            // putDown();
+            timeStart = Time.time; // Gets start of timer
         }
         if (inHand && npc.pi.actions.FindAction("Throw").IsPressed()) //Gets active time
         {
-            timeNow = Time.time - timeStart;
-            textMesh.text = "Power: " + timeNow.ToString("F2");
+            timeNow = Time.time - timeStart; // Gets current time of the timer
+            textMesh.text = "Power: " + timeNow.ToString("F2"); // Displays the strength of the throw
         }
         if (inHand && npc.pi.actions.FindAction("Throw").WasReleasedThisFrame()) //Set time end
         {
             inHand = false;
-            timeEnd = Time.time;
-            strengthMulti = timeEnd - timeStart;
-            textMesh.text = null;
+            timeEnd = Time.time; // Gets the end of the timer
+            strengthMulti = timeEnd - timeStart; // Sets the strength multiplier
+            textMesh.text = null; // Resets the text display to blank
             putDown();
-            // timeDiff = timeEnd - timeStart;
-            // if (timeDiff <= holdThreshold)
-            // {
-            //     strengthMulti = 1;
-            // }
-            // else
-            // {
-            //     strengthMulti = timeDiff;
-            // }
         }
-
+        if(!inZone && !inHand)
+        {
+            interItem = interZone = null;
+            rb = null;
+        }
     }
 
     //Carrying actions
@@ -96,17 +89,18 @@ public class InteractionUI : MonoBehaviour
         if (!inHand)
         {
             inHand = true;
-            //Put whatever interaction is needed after this comment
             //Prevent being able to interect again while inHand the interactable
-            jrObject.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            jrObject.gameObject.GetComponent<SphereCollider>().enabled = false;
+            interZone.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            interZone.gameObject.GetComponent<SphereCollider>().enabled = false;
+
             //turning objects physics off
             rb.isKinematic = true;
             inZone = false;
+            
             //Pick up the object
-            srObject.transform.SetParent(holdParent, worldPositionStays: true);
-            srObject.transform.localPosition = new Vector3(0, 0, 0);
-            srObject.transform.localRotation = new Quaternion (0,0,0,0);
+            interItem.transform.SetParent(holdParent, worldPositionStays: true);
+            interItem.transform.localPosition = new Vector3(0, 0, 0);
+            interItem.transform.localRotation = new Quaternion (0,0,0,0);
         }
     }
     void putDown()
@@ -118,10 +112,11 @@ public class InteractionUI : MonoBehaviour
 
         //Disassociate object from the player 
         rb = null;
-        srObject.transform.parent = null;
+        interItem.transform.parent = null;//removes from any parent
+
         //Enable interection again after detaching
-        jrObject.gameObject.GetComponent<MeshRenderer>().enabled = true;
-        jrObject.gameObject.GetComponent<SphereCollider>().enabled = true;
+        interZone.gameObject.GetComponent<MeshRenderer>().enabled = true;
+        interZone.gameObject.GetComponent<SphereCollider>().enabled = true;
     }
 }
 //Current Bugs needed to be fixed
