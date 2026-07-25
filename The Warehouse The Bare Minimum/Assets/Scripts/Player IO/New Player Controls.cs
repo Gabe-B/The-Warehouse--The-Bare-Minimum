@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,6 +15,7 @@ public class NewPlayerControls : MonoBehaviour
 	private InputAction m_jumpAction;
 	private InputAction m_sprintAction;
 	private InputAction m_interactAction;
+	private InputAction m_pauseAction;
 
 	//Used to move the player
 	private Vector2 m_moveAmt;
@@ -45,10 +46,13 @@ public class NewPlayerControls : MonoBehaviour
 	public Vector3 groundCheckBoxSize;
 	private bool m_grounded = true;
 
+	//Pause menu
+	public PauseMenu pm;
+
 	public float gravity;
 
-	[SerializeField]
 	public bool canMove = true;
+	public bool canLook = true;
 
 	private void OnEnable()
 	{
@@ -78,6 +82,7 @@ public class NewPlayerControls : MonoBehaviour
 		m_jumpAction = InputSystem.actions.FindAction("Jump");
 		m_sprintAction = InputSystem.actions.FindAction("Sprint");
 		m_interactAction = InputSystem.actions.FindAction("Interact");
+		m_pauseAction = InputSystem.actions.FindAction("Pause");
 
 		//Gets the rigidbody component from the gameobject
 		m_rigidbody = GetComponent<Rigidbody>();
@@ -95,10 +100,17 @@ public class NewPlayerControls : MonoBehaviour
 		//Automatically sets the size of the boxcast to be the colliders size
 		groundCheckBoxSize = gameObject.GetComponent<BoxCollider>().size;
 		groundCheckBoxSize.y = 1;
+
+		pm = FindObjectOfType<PauseMenu>();
 	}
 
 	private void Update()
 	{
+		if(pm ==null)
+		{
+			pm = FindObjectOfType<PauseMenu>();
+		}
+
 		//Checks for grounded state of player
 		m_grounded = Grounded();
 
@@ -126,6 +138,21 @@ public class NewPlayerControls : MonoBehaviour
 		else if (pi.actions.FindAction("Sprint").WasReleasedThisFrame())
 		{
 			isSprinting = false;
+		}
+
+		if(pi.actions.FindAction("Pause").WasPressedThisFrame() && !pm.pausePanel.activeSelf)
+		{
+			pm.pausePanel.SetActive(true);
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+			Time.timeScale = 0;
+		}
+		else if (pi.actions.FindAction("Pause").WasPressedThisFrame() && pm.pausePanel.activeSelf)
+		{
+			pm.pausePanel.SetActive(false);
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+			Time.timeScale = 1;
 		}
 	}
 
@@ -194,44 +221,50 @@ public class NewPlayerControls : MonoBehaviour
 
 	private void Rotating()
 	{
-		//Gets the rotation on the X-axis based on the X-value of the players look value. Look value is derived from the players input (mouse movement or joystick input)
-		rotationAmtX += m_lookAmt.x * RotateSpeed * Time.deltaTime;
+		if (canLook)
+		{
+			//Gets the rotation on the X-axis based on the X-value of the players look value. Look value is derived from the players input (mouse movement or joystick input)
+			rotationAmtX += m_lookAmt.x * RotateSpeed * Time.deltaTime;
 
-		//Gets the rotation on the Y-axis based on the Y-value of the players look value. Look value is derived from the players input (mouse movement or joystick input)
-		rotationAmtY -= m_lookAmt.y * RotateSpeed * Time.deltaTime;
+			//Gets the rotation on the Y-axis based on the Y-value of the players look value. Look value is derived from the players input (mouse movement or joystick input)
+			rotationAmtY -= m_lookAmt.y * RotateSpeed * Time.deltaTime;
 
-		//Keeps the Y-rotation within a defined range to keep the camera from being able rotate completely around the player vertically 
-		rotationAmtY = Mathf.Clamp(rotationAmtY, lowerCamRotatioClamp, upperCamRotationClamp);
+			//Keeps the Y-rotation within a defined range to keep the camera from being able rotate completely around the player vertically 
+			rotationAmtY = Mathf.Clamp(rotationAmtY, lowerCamRotatioClamp, upperCamRotationClamp);
 
-		//Sets the rotation of the pivot point of the camera to the defined rotation. Camera object is a child of this pivot point, so it rotates accordingly
-		cameraPivot.transform.rotation = Quaternion.Euler(rotationAmtY, rotationAmtX, 0);
+			//Sets the rotation of the pivot point of the camera to the defined rotation. Camera object is a child of this pivot point, so it rotates accordingly
+			cameraPivot.transform.rotation = Quaternion.Euler(rotationAmtY, rotationAmtX, 0);
+		}
 	}
 
 	private void AdjustDirectionFacing()
 	{
-		//Adjusts the players model rotation to face the direction the player is moving based on player movement input (via WASD or joystick) and where the camera is facing
-		Vector3 faceDir = (cameraPivot.transform.forward * m_moveAmt.y) + (cameraPivot.transform.right * m_moveAmt.x);
-		faceDir.y = 0;
+		if(canLook)
+		{
+			//Adjusts the players model rotation to face the direction the player is moving based on player movement input (via WASD or joystick) and where the camera is facing
+			Vector3 faceDir = (cameraPivot.transform.forward * m_moveAmt.y) + (cameraPivot.transform.right * m_moveAmt.x);
+			faceDir.y = 0;
 
-		//Checks if the player is providing an input
-		if (faceDir != Vector3.zero)
-		{
-			//Sets the player models rotation
-			playerModel.transform.rotation = Quaternion.LookRotation(faceDir);
+			//Checks if the player is providing an input
+			if (faceDir != Vector3.zero)
+			{
+				//Sets the player models rotation
+				playerModel.transform.rotation = Quaternion.LookRotation(faceDir);
 
-			//Sets a temp variable to keep track of for future use
-			m_tempFaceDir = faceDir;
-		}
-		//Checks if the player isn't providing new inputs and the temp variable has been set previously
-		else if (faceDir == Vector3.zero && m_tempFaceDir != null)
-		{
-			//Sets the player models rotation based on the last known rotation to prevent the rotation from snapping back to the 'zero' position
-			playerModel.transform.rotation = Quaternion.LookRotation(m_tempFaceDir);
-		}
-		else
-		{
-			//Sets the player models rotation
-			playerModel.transform.rotation = Quaternion.LookRotation(faceDir);
+				//Sets a temp variable to keep track of for future use
+				m_tempFaceDir = faceDir;
+			}
+			//Checks if the player isn't providing new inputs and the temp variable has been set previously
+			else if (faceDir == Vector3.zero && m_tempFaceDir != null)
+			{
+				//Sets the player models rotation based on the last known rotation to prevent the rotation from snapping back to the 'zero' position
+				playerModel.transform.rotation = Quaternion.LookRotation(m_tempFaceDir);
+			}
+			else
+			{
+				//Sets the player models rotation
+				playerModel.transform.rotation = Quaternion.LookRotation(faceDir);
+			}
 		}
 	}
 
