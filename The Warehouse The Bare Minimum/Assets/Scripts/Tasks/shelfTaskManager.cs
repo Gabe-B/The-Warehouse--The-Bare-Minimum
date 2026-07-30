@@ -9,6 +9,7 @@ public class shelfTaskManager : IndividualTaskManager
 		if(pairedShelf.isComplete)
 		{
 			EndTask();
+			pairedShelf.isComplete = false;
 		}
 	}
 
@@ -24,7 +25,6 @@ public class shelfTaskManager : IndividualTaskManager
 	{
 		base.EndTask();
 
-		pairedShelf.EndingTask();
 		hasBeenCompleted = true;
 	}
 }
