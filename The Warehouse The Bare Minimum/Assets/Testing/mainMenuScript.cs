@@ -6,6 +6,7 @@ public class mainMenuScript : MonoBehaviour
 {
     //Goes on the Global UI Object on every map
     public GameObject mainMenuUI,lobbyUI,settingsUI,pauseUI;
+    public NewPlayerControls npc;
     void Start()
     {
         mainMenuUI.SetActive(true);
@@ -30,6 +31,7 @@ public class mainMenuScript : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "main_menu")
         {
             settingsUI.SetActive(true);
+            pauseUI.SetActive(false);
         }
     }
     public void backButton()
@@ -44,6 +46,7 @@ public class mainMenuScript : MonoBehaviour
         //If your in game
         if (SceneManager.GetActiveScene().name != "main_menu"){
             settingsUI.SetActive(false);
+            pauseUI.SetActive(true);
         }
     }
     public void quitButton()
