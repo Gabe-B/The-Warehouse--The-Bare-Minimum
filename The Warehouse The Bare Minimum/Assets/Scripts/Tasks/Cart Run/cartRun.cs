@@ -38,6 +38,12 @@ public class cartRun : Task
     {
         Debug.Log("The cart run has ended");
         //Destroy the carts
+        for (int i=0;i < cartsInHand.Count;i++)
+        {
+            GameObject tempCart = cartsInHand[i];
+            cartsInHand.Remove(tempCart);
+            Destroy(tempCart);
+        }
 
         isInProgress = false;
         isComplete = true;
