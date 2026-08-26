@@ -86,7 +86,7 @@ public class masterTaskManager : MonoBehaviour
 		if (t_tasksHaveBeenGiven) return;
 
 		//Getting random number for initial tasks
-		int initTaskCount = 1;//Random.Range(3, 5);
+		int initTaskCount = Random.Range(1, taskManagerList.Count);
 
 		//Clears list from last run
 		//selectedTaskManagers.Clear(); //Commented out because the update task status function should handle it
