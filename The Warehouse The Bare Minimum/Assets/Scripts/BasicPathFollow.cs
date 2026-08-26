@@ -135,4 +135,14 @@ public class BasicPathFollow : MonoBehaviour
 		obj.position = end.position;
 		obj.rotation = end.rotation;
 	}
+
+	public void StartLerp()
+	{
+		lerpOnStart = true;
+	}
+
+	public void RestartLerp()
+	{
+		lerpOnStart = false;
+	}
 }

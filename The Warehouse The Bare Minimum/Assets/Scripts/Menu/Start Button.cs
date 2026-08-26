@@ -4,31 +4,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class StartButton : MonoBehaviour
 {
-	public bool p_pointerIsHovering = false;
-	private Image b_buttonBackgroundColor;
-	private Color b_defaultButtonColor;
+	public GameObject MainMenuPanel, LocalLobbyPanel;
 
-	private void Start()
+	public void StartButtonPressed ()
 	{
-		b_buttonBackgroundColor = gameObject.GetComponent<Image>();
-		b_defaultButtonColor = b_buttonBackgroundColor.color;
-	}
-
-	private void Update()
-	{
-		
-	}
-
-	//Uses the pointer enter/exit handlers to detect when the cursor is hovering over the gameobject this script is attached to
-	public void OnPointerEnter(PointerEventData eventData)
-	{
-		p_pointerIsHovering = true;
-	}
-
-	public void OnPointerExit(PointerEventData eventData)
-	{
-		p_pointerIsHovering = false;
+		MainMenuPanel.SetActive(false);
+		LocalLobbyPanel.SetActive(true);
 	}
 }

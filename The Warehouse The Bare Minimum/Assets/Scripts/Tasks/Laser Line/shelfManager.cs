@@ -7,15 +7,24 @@ public class shelfManager : Task
 
 	private bool hasBeenCompleted = false;
     private int cleanedBoxes;
+    private bool b_hasAddedBoxes = false;
 
-	private void Start()
+	private void Awake()
 	{
+        Collider[] box = Physics.OverlapBox(gameObject.transform.position, transform.localScale / 2, Quaternion.identity);
 
-	}
+        foreach (Collider c in box)
+        {
+            if (c.GetComponent<boxManager>() && !boxes.Contains(c.GetComponent<boxManager>()))
+            {
+                boxes.Add(c.GetComponent<boxManager>());
+            }
+        }
+    }
 
 	private void Update()
 	{
-        if(!isComplete && isInProgress)
+        if (!isComplete && isInProgress)
 		{
             cleanedBoxes = 0;
 
