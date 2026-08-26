@@ -1915,7 +1915,7 @@ GameObject:
   m_Component:
   - component: {fileID: 139182007}
   - component: {fileID: 139182008}
-  - component: {fileID: 139182009}
+  - component: {fileID: 139182010}
   m_Layer: 0
   m_Name: Local Player Input Manager
   m_TagString: Untagged
@@ -1950,13 +1950,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInputManager
-  m_NotificationBehavior: 1
+  m_NotificationBehavior: 0
   m_MaxPlayerCount: 4
   m_AllowJoining: 1
   m_JoinBehavior: 0
   m_PlayerJoinedEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 139182010}
+        m_TargetAssemblyTypeName: LobbyPlayerJoin, Assembly-CSharp
+        m_MethodName: SpawnLobbyPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_PlayerLeftEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1982,7 +1994,7 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &139182009
+--- !u!114 &139182010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1991,17 +2003,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 139182006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f2f7520648948d41a9bf8a1757c7009, type: 3}
+  m_Script: {fileID: 11500000, guid: b100ed5066e03e143bdc387b1e610061, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawn
+  m_EditorClassIdentifier: Assembly-CSharp::LobbyPlayerJoin
   spawnPoints:
   - {fileID: 1425561293}
   - {fileID: 573824266}
   - {fileID: 1861723356}
   - {fileID: 1682225210}
-  closedBoxes: []
-  openBoxes: []
-  bpf: {fileID: 0}
+  playerLobbyModel: {fileID: 8457166694694399323, guid: 07c38bfa69dc90d4f9f591de05de9211, type: 3}
 --- !u!1 &148421070
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,6 +2393,11 @@ RectTransform:
   m_AnchoredPosition: {x: 3414.275, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &178135314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
+  m_PrefabInstance: {fileID: 289333513}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &183948831
 GameObject:
   m_ObjectHideFlags: 0
@@ -3237,7 +3252,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1076706961}
     m_Modifications:
     - target: {fileID: 5123073713068053320, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_Name
@@ -3261,7 +3276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.y
@@ -3570,7 +3585,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1076706961}
     m_Modifications:
     - target: {fileID: 5123073713068053320, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_Name
@@ -3594,7 +3609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.y
@@ -4433,7 +4448,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1076706961}
     m_Modifications:
     - target: {fileID: 5123073713068053320, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_Name
@@ -4457,7 +4472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.y
@@ -9565,6 +9580,8 @@ GameObject:
   - component: {fileID: 725550359}
   - component: {fileID: 725550363}
   - component: {fileID: 725550364}
+  - component: {fileID: 725550365}
+  - component: {fileID: 725550366}
   m_Layer: 5
   m_Name: Menu / UI
   m_TagString: Untagged
@@ -9695,7 +9712,51 @@ MonoBehaviour:
   lobbyUI: {fileID: 1387229608}
   settingsUI: {fileID: 319269360}
   pauseUI: {fileID: 0}
+  confirmUI: {fileID: 0}
   npc: {fileID: 4409170239080527417, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
+  buttonValue: 0
+--- !u!114 &725550365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725550358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38978dc48fbd34a41b19c29f666833a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicPathFollow
+  lerpOnStart: 0
+  objectToLerp: {fileID: 253781395}
+  lerpPoints:
+  - {fileID: 2002560414}
+  - {fileID: 442072212}
+  lerpTime:
+  - 0.25
+  - 0.25
+  isDoneLerping: 0
+--- !u!114 &725550366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725550358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38978dc48fbd34a41b19c29f666833a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicPathFollow
+  lerpOnStart: 0
+  objectToLerp: {fileID: 253781395}
+  lerpPoints:
+  - {fileID: 442072212}
+  - {fileID: 2002560414}
+  lerpTime:
+  - 0.25
+  - 0.25
+  isDoneLerping: 0
 --- !u!1 &727996758
 GameObject:
   m_ObjectHideFlags: 0
@@ -11774,6 +11835,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1018867534}
   m_CullTransparentMesh: 1
+--- !u!4 &1032418279 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
+  m_PrefabInstance: {fileID: 243262471}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1044234185
 GameObject:
   m_ObjectHideFlags: 0
@@ -12008,8 +12074,18 @@ Transform:
   - {fileID: 1691675824}
   - {fileID: 2002560414}
   - {fileID: 442072212}
+  - {fileID: 1488143453}
+  - {fileID: 178135314}
+  - {fileID: 1090474130}
+  - {fileID: 1032418279}
+  - {fileID: 1855949343}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1090474130 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
+  m_PrefabInstance: {fileID: 214707654}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1094076511
 GameObject:
   m_ObjectHideFlags: 0
@@ -12541,7 +12617,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1076706961}
     m_Modifications:
     - target: {fileID: 5123073713068053320, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_Name
@@ -12565,7 +12641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
       propertyPath: m_LocalRotation.y
@@ -13372,7 +13448,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1076706961}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a847f1d28c4e6344aa20b3ffce2cb9fa, type: 3}
       propertyPath: m_LocalScale.x
@@ -14301,7 +14377,6 @@ GameObject:
   - component: {fileID: 1188119841}
   - component: {fileID: 1188119840}
   - component: {fileID: 1188119843}
-  - component: {fileID: 1188119844}
   m_Layer: 5
   m_Name: Clock In Button
   m_TagString: Untagged
@@ -14441,19 +14516,6 @@ MonoBehaviour:
   startPosition: {fileID: 558661870}
   midPosition: {fileID: 1721833532}
   endPosition: {fileID: 205121635}
---- !u!114 &1188119844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1188119838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9821fbc7c46b9444dbb54a15e23cdff0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StartButton
-  p_pointerIsHovering: 0
 --- !u!1 &1202881635
 GameObject:
   m_ObjectHideFlags: 0
@@ -18830,6 +18892,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485795747}
   m_CullTransparentMesh: 1
+--- !u!4 &1488143453 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5499740439732832754, guid: 288c9a6986a640a43b2b1b8198df72e1, type: 3}
+  m_PrefabInstance: {fileID: 1116081917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1495848753
 GameObject:
   m_ObjectHideFlags: 0
@@ -19669,7 +19736,6 @@ GameObject:
   - component: {fileID: 1553470467}
   - component: {fileID: 1553470466}
   - component: {fileID: 1553470465}
-  - component: {fileID: 1553470468}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -19742,6 +19808,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 725550365}
+        m_TargetAssemblyTypeName: BasicPathFollow, Assembly-CSharp
+        m_MethodName: RestartLerp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 725550366}
+        m_TargetAssemblyTypeName: BasicPathFollow, Assembly-CSharp
+        m_MethodName: StartLerp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 725550364}
         m_TargetAssemblyTypeName: mainMenuScript, Assembly-CSharp
         m_MethodName: backButton
@@ -19792,19 +19882,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1553470461}
   m_CullTransparentMesh: 1
---- !u!114 &1553470468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553470461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b420b2911c11dc34b93c71798e480dc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MultiplayerButton
-  p_pointerIsHovering: 0
 --- !u!1 &1557863325
 GameObject:
   m_ObjectHideFlags: 0
@@ -19890,6 +19967,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 725550365}
+        m_TargetAssemblyTypeName: BasicPathFollow, Assembly-CSharp
+        m_MethodName: StartLerp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 725550366}
+        m_TargetAssemblyTypeName: BasicPathFollow, Assembly-CSharp
+        m_MethodName: RestartLerp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 725550364}
         m_TargetAssemblyTypeName: mainMenuScript, Assembly-CSharp
         m_MethodName: playButton
@@ -19952,7 +20053,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9821fbc7c46b9444dbb54a15e23cdff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartButton
-  p_pointerIsHovering: 0
+  MainMenuPanel: {fileID: 1596373809}
+  LocalLobbyPanel: {fileID: 1387229608}
 --- !u!1 &1567004490
 GameObject:
   m_ObjectHideFlags: 0
@@ -23808,6 +23910,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1851197141}
   m_CullTransparentMesh: 1
+--- !u!4 &1855949343 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a847f1d28c4e6344aa20b3ffce2cb9fa, type: 3}
+  m_PrefabInstance: {fileID: 1133189551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1861723355
 GameObject:
   m_ObjectHideFlags: 0
@@ -26681,11 +26788,6 @@ SceneRoots:
   - {fileID: 139182007}
   - {fileID: 725550362}
   - {fileID: 1076706961}
-  - {fileID: 1116081917}
-  - {fileID: 289333513}
-  - {fileID: 214707654}
-  - {fileID: 243262471}
-  - {fileID: 1133189551}
   - {fileID: 7133681288493971969}
   - {fileID: 558661870}
   - {fileID: 1721833532}

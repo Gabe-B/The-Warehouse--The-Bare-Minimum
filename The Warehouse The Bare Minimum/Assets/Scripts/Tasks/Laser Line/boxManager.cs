@@ -48,7 +48,7 @@ public class boxManager : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("player") && b_isDirty)
+        if (collision.gameObject.CompareTag("player") && b_isDirty && !collision.GetComponent<NewPlayerControls>().isSprinting)
         {
             //Changing box to clean state
             b_isDirty = false;
@@ -68,12 +68,12 @@ public class boxManager : MonoBehaviour
 
     void dState()
     {
-        v_dirtyPosition = new Vector3(Random.Range(transform.localPosition.x - 2f, transform.localPosition.x + 2f), transform.localPosition.y, Random.Range(transform.localPosition.z - 2f, transform.localPosition.z + 2f));
+        v_dirtyPosition = new Vector3(Random.Range(transform.localPosition.x - 0.5f, transform.localPosition.x + 0.5f), transform.localPosition.y, Random.Range(transform.localPosition.z - 0.5f, transform.localPosition.z + 0.5f));
 
         //Changing the local position of the box to the clean state
         transform.localPosition = v_dirtyPosition;
 
-        transform.rotation = Quaternion.Euler(q_startRot.x, Random.Range(-25, 25), q_startRot.z);
+        transform.rotation = Quaternion.Euler(q_startRot.eulerAngles.x, Random.Range(q_startRot.eulerAngles.y - 25, q_startRot.eulerAngles.y + 25), q_startRot.eulerAngles.z);
 
         //Enabling the product boxes collision box and displaying the product zone
         productContainer.enabled = true;

@@ -28,6 +28,7 @@ public class NewPlayerControls : MonoBehaviour
 	public GameObject cameraPivot;
 	public float upperCamRotationClamp = 30;
 	public float lowerCamRotatioClamp = -30;
+	public bool isSprinting = false;
 
 	//Rates at which to move the players IO
 	public float WalkSpeed = 5;
@@ -39,7 +40,6 @@ public class NewPlayerControls : MonoBehaviour
 	private float rotationAmtY = 0;
 	public float m_currentMoveSpeed;
 	private Vector3 m_tempFaceDir;
-	private bool isSprinting = false;
 
 	//Ground Check
 	public float groundCheckDistance;
