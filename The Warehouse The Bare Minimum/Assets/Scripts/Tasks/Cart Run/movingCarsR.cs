@@ -1,16 +1,21 @@
 using UnityEngine;
-using TMPro;
 
 public class movingCarsR: MonoBehaviour
 {
     public GameObject car;
-    public TextMeshProUGUI textMesh;
-    private int baseSpeed = 5;
+    private int baseSpeed = 3;
     private float modSpeed;
 
+    private Renderer colorRandomizer;
+
+    void Start()
+    {
+        colorRandomizer = GetComponent<Renderer>();
+    }
     //Creating the teleport function
     void carTeleport()
     {
+        colorRandomizer.material.SetColor("_Color",new Color(Random.Range(0f,1f),Random.Range(0f,1f),Random.Range(0f,1f)));
         car.transform.position = new Vector3 (-338,10,-275);
     }
     void FixedUpdate()
@@ -19,8 +24,7 @@ public class movingCarsR: MonoBehaviour
         if(car.transform.position.z >= 265)
         {
             carTeleport();
-            modSpeed = baseSpeed + (Random.Range(0,6));
-            textMesh.text = "" + modSpeed;
+            modSpeed = baseSpeed + Random.Range(0,6);
         }
 
         //Creating the variable to move the car

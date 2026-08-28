@@ -7,6 +7,8 @@ public class autoDoors : MonoBehaviour
     public Transform d1Open, d1Closed, d2Open, d2Closed;
     private bool hasOpened;
     public float duration;
+
+    //ALOT OF THIS CAN BE REWRITTEN I HAD TO LOOK UP ALOT AND USE ALOT OF WHAT I SAW
     void OnTriggerEnter(Collider other)
     {
         if (!hasOpened)
@@ -14,23 +16,14 @@ public class autoDoors : MonoBehaviour
             hasOpened = true;
             StartCoroutine(LerpLoop());
         }
-        // if (other.gameObject.CompareTag("player"))
-        // {
-        //     doorOne.transform.position = d1Open.transform.position;
-        //     doorTwo.transform.position = d2Open.transform.position;
-        // }
     }
     void OnTriggerExit(Collider other)
     {
         if (hasOpened)
         {
             hasOpened = false;
+            StartCoroutine(LerpLoop());
         }
-        // if (other.gameObject.CompareTag("player"))
-        // {
-        //     doorOne.transform.position = d1Closed.transform.position;
-        //     doorTwo.transform.position = d2Closed.transform.position;
-        // }
     }
     private IEnumerator LerpLoop()
     {
@@ -76,7 +69,6 @@ public class autoDoors : MonoBehaviour
                 // and resume the loop on the next frame
                 yield return null;
             }
-            // Snap precisely to the target position when the loop finishes
             doorOne.transform.position = d1Closed.transform.position;
             doorTwo.transform.position = d2Closed.transform.position;
         }

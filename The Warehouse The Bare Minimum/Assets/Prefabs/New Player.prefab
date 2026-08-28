@@ -1891,6 +1891,37 @@ Transform:
   - {fileID: 2844442667507529783}
   m_Father: {fileID: -2567516703252157170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6238366253446079422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1024953881906110684}
+  m_Layer: 0
+  m_Name: Cart Location
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1024953881906110684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6238366253446079422}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.921915, z: 3.527005}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4390941209324348523}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6373269826819467135
 GameObject:
   m_ObjectHideFlags: 0
@@ -2365,6 +2396,7 @@ GameObject:
   - component: {fileID: -8377522949599985647}
   - component: {fileID: 8937006556683849928}
   - component: {fileID: 5763865321595214872}
+  - component: {fileID: 3573565383165734444}
   m_Layer: 0
   m_Name: New Player
   m_TagString: player
@@ -2457,6 +2489,7 @@ MonoBehaviour:
   cameraPivot: {fileID: 5521229259900133124}
   upperCamRotationClamp: 45
   lowerCamRotatioClamp: -90
+  isSprinting: 0
   WalkSpeed: 200
   SprintSpeed: 500
   RotateSpeed: 500
@@ -2464,8 +2497,10 @@ MonoBehaviour:
   m_currentMoveSpeed: 0
   groundCheckDistance: 5.4
   groundCheckBoxSize: {x: 3, y: 1, z: 4}
+  pm: {fileID: 0}
   gravity: -80
   canMove: 1
+  canLook: 1
 --- !u!114 &-8377522949599985647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2610,6 +2645,20 @@ MonoBehaviour:
   heldItems: []
   spaceMulti: 5
   throwStrength: 0
+--- !u!114 &3573565383165734444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236070782341004144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46837e1c9ad3a6743a6c4de02d6a6028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::cartCollisions
+  rb: {fileID: 3982684591725840485}
+  cartLocation: {fileID: 6238366253446079422}
 --- !u!1 &8731117564151970655
 GameObject:
   m_ObjectHideFlags: 0
@@ -2706,6 +2755,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e921a8b43990575469d9702be9a99b73, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2609529822126377538}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e921a8b43990575469d9702be9a99b73, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1024953881906110684}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e921a8b43990575469d9702be9a99b73, type: 3}
       insertIndex: -1
