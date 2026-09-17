@@ -11,7 +11,7 @@ public class autoDoors : MonoBehaviour
     //ALOT OF THIS CAN BE REWRITTEN I HAD TO LOOK UP ALOT AND USE ALOT OF WHAT I SAW
     void OnTriggerEnter(Collider other)
     {
-        if (!hasOpened)
+        if (!hasOpened && !other.CompareTag("cart"))
         {
             hasOpened = true;
             StartCoroutine(LerpLoop());
@@ -19,7 +19,7 @@ public class autoDoors : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
-        if (hasOpened)
+        if (hasOpened && !other.CompareTag("cart"))
         {
             hasOpened = false;
             StartCoroutine(LerpLoop());

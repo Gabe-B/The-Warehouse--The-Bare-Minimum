@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 4748779447359108048}
   - component: {fileID: 7322567492145312820}
   - component: {fileID: 7088900130182397203}
+  - component: {fileID: 6855324545191157261}
   m_Layer: 0
   m_Name: Open Trigger - SCRIPT HERE
-  m_TagString: Untagged
+  m_TagString: collect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,6 +133,20 @@ MonoBehaviour:
   d2Open: {fileID: 9115313748309751182}
   d2Closed: {fileID: 7252791250540849835}
   duration: 1
+--- !u!114 &6855324545191157261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140274527939459016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f84e06977efb0c4b8ff3131f0d9d399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::cartCollections
+  collect: {fileID: 3573565383165734444, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
+  fart: {fileID: 8236070782341004144, guid: 3d9b3568a35a1b94295d4223ef083b8c, type: 3}
 --- !u!1 &618713785111471477
 GameObject:
   m_ObjectHideFlags: 0
