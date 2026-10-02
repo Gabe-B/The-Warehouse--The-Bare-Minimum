@@ -11,15 +11,7 @@ public class shelfManager : Task
 
 	private void Awake()
 	{
-        Collider[] box = Physics.OverlapBox(gameObject.transform.position, transform.localScale / 2, Quaternion.identity);
-
-        foreach (Collider c in box)
-        {
-            if (c.GetComponent<boxManager>() && !boxes.Contains(c.GetComponent<boxManager>()))
-            {
-                boxes.Add(c.GetComponent<boxManager>());
-            }
-        }
+        GetItemsOnShelf();
     }
 
 	private void Update()
@@ -64,5 +56,18 @@ public class shelfManager : Task
         Debug.Log("The laser line has ended");
         isInProgress = false;
         isComplete = true;
+    }
+
+    public void GetItemsOnShelf()
+	{
+        Collider[] box = Physics.OverlapBox(gameObject.transform.position, transform.localScale / 2, Quaternion.identity);
+
+        foreach (Collider c in box)
+        {
+            if (c.GetComponent<boxManager>() && !boxes.Contains(c.GetComponent<boxManager>()))
+            {
+                boxes.Add(c.GetComponent<boxManager>());
+            }
+        }
     }
 }
