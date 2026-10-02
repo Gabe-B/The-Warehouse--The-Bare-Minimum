@@ -1,75 +1,28 @@
 using UnityEngine;
 
-public class ShelfSlot : MonoBehaviour, IInteractable
+public class ShelfSlot : MonoBehaviour
 {
-    [Header("Item Placement")]
-    [SerializeField] private Transform itemAnchor;
+	public bool currentlyOccupied = false;
+	public CarryableItem Item;
 
-    private Item currentItem;
+    public void TryPlaceItemOntoShelf (CarryableItem item)
+	{
+		if (currentlyOccupied) return;
 
-    public bool IsOccupied => currentItem != null;
-    public Item CurrentItem => currentItem;
+		item.transform.parent = null;
+		item.transform.position = transform.position;
 
-    public bool CanInteract(ItemInteraction player)
-    {
-        // Player is holding something.
-        // They can interact if this slot is empty.
-        if (player.Inventory.HasItem)
-        {
-            return !IsOccupied;
-        }
+		currentlyOccupied = true;
+		Item = item;
+	}
 
-        // Player isn't holding anything.
-        // They can interact if this slot contains an item.
-        return IsOccupied;
-    }
+	public CarryableItem TryPickupItemFromShelf (CarryableItem item)
+	{
+		item.transform.parent = null;
+		currentlyOccupied = false;
 
-    public void Interact(ItemInteraction player)
-    {
-        if (player.Inventory.HasItem)
-        {
-            player.PlaceIntoSlot(this);
-        }
-        else if (IsOccupied)
-        {
-            player.PickUpFromSlot(this);
-        }
-    }
-
-    public string GetInteractionPrompt(ItemInteraction player)
-    {
-        if (player.Inventory.HasItem)
-        {
-            return IsOccupied ? "" : "Place";
-        }
-
-        return IsOccupied ? "Pick Up" : "";
-    }
-
-    public bool TryPlaceItem(Item item)
-    {
-        if (IsOccupied)
-            return false;
-
-        currentItem = item;
-
-        item.transform.SetParent(itemAnchor);
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
-
-        return true;
-    }
-
-    public Item TakeItem()
-    {
-        if (!IsOccupied)
-            return null;
-
-        Item item = currentItem;
-        currentItem = null;
-
-        item.transform.SetParent(null);
-
-        return item;
-    }
+		CarryableItem i = Item;
+		Item = null;
+		return i;
+	}
 }

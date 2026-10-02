@@ -1,89 +1,80 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ItemInteraction : MonoBehaviour
 {
-    [Header("Interaction")]
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private float interactionDistance = 3f;
+    public PlayerInput pi;
 
-    [Header("Inventory")]
-    [SerializeField] private PlayerInventory inventory;
-    [SerializeField] private Transform itemHand;
+    public GameObject playerCamera;
+    public LayerMask mask;
+    public float interactCheckDistance = 10.0f;
 
-    public PlayerInventory Inventory => inventory;
-    public Transform ItemHand => itemHand;
+    public bool isAtMaxCarryCapacity = false;
+    int maxCarryAmount = 5;
+    int currentCarryAmount = 0;
 
-    private void Update()
+    public Transform ItemHeldPosition;
+    public List<CarryableItem> HeldItems;
+
+    ShelfSlot s_targetShelfSlot;
+    CarryableItem c_targetCarryableItem;
+    RaycastHit hit;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryInteract();
-        }
+        pi = gameObject.GetComponent<PlayerInput>();
     }
 
-    private void TryInteract()
+    // Update is called once per frame
+    void Update()
     {
-        Ray ray = new Ray(
-            playerCamera.transform.position,
-            playerCamera.transform.forward
-        );
+        if(currentCarryAmount == maxCarryAmount)
+		{
+            isAtMaxCarryCapacity = true;
+		}
+        
+        Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, interactCheckDistance, mask);
 
-        if (Physics.Raycast(
-            ray,
-            out RaycastHit hit,
-            interactionDistance))
-        {
-            IInteractable interactable =
-                hit.collider.GetComponentInParent<IInteractable>();
+        s_targetShelfSlot = hit.transform.gameObject.GetComponent<ShelfSlot>();
+        c_targetCarryableItem = hit.transform.gameObject.GetComponent<CarryableItem>();
 
-            if (interactable == null)
-                return;
-
-            if (!interactable.CanInteract(this))
-                return;
-
-            interactable.Interact(this);
+        if (s_targetShelfSlot != null)
+		{
+            if (pi.actions.FindAction("Interact").WasPressedThisFrame() && !isAtMaxCarryCapacity)
+            {
+                HeldItems.Add(s_targetShelfSlot.TryPickupItemFromShelf(s_targetShelfSlot.Item));
+                currentCarryAmount++;
+            }
+            else if (pi.actions.FindAction("Interact").WasPressedThisFrame() && isAtMaxCarryCapacity)
+			{
+                s_targetShelfSlot.TryPlaceItemOntoShelf(HeldItems[HeldItems.Count-1]); //Always placing the top most item in the list
+            }
         }
+        else if (c_targetCarryableItem != null)
+		{
+            if(pi.actions.FindAction("Interact").WasPressedThisFrame())
+			{
+				try
+				{
+                    HeldItems.Add(TryPickupItem(c_targetCarryableItem));
+                }
+				catch (Exception e)
+				{
+                    Debug.Log("Already carrying too much!!");
+				}
+			}
+		}
     }
 
-    public void PickUpFromSlot(ShelfSlot slot)
-    {
-        if (inventory.HasItem)
-            return;
+	public CarryableItem TryPickupItem (CarryableItem item)
+	{
+        if (isAtMaxCarryCapacity) return null;
 
-        Item item = slot.TakeItem();
-
-        if (item == null)
-            return;
-
-        if (!inventory.TryTakeItem(item))
-        {
-            slot.TryPlaceItem(item);
-            return;
-        }
-
-        item.transform.SetParent(itemHand);
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
-    }
-
-    public void PlaceIntoSlot(ShelfSlot slot)
-    {
-        if (!inventory.HasItem)
-            return;
-
-        if (slot.IsOccupied)
-            return;
-
-        Item item = inventory.RemoveItem();
-
-        if (item == null)
-            return;
-
-        if (!slot.TryPlaceItem(item))
-        {
-            inventory.TryTakeItem(item);
-        }
-    }
+        item.transform.parent = ItemHeldPosition;
+        currentCarryAmount++;
+        return item;
+	}
 }
