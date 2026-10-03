@@ -7,7 +7,6 @@ public class ItemInteraction : MonoBehaviour
 {
     public PlayerInput pi;
 
-    public GameObject playerCamera;
     public LayerMask mask;
     public float interactCheckDistance = 10.0f;
 
@@ -16,6 +15,8 @@ public class ItemInteraction : MonoBehaviour
     int currentCarryAmount = 0;
 
     public Transform ItemHeldPosition;
+    public Transform InteractCheckPosition;
+    public Transform playerCameraPivot;
     public List<CarryableItem> HeldItems;
 
     ShelfSlot s_targetShelfSlot;
@@ -36,44 +37,54 @@ public class ItemInteraction : MonoBehaviour
             isAtMaxCarryCapacity = true;
 		}
         
-        Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, interactCheckDistance, mask);
+        bool isLookingAtInteractable = Physics.BoxCast(InteractCheckPosition.position, new Vector3(6, 10, 1), InteractCheckPosition.forward, out hit, Quaternion.identity, interactCheckDistance, mask);
 
-        s_targetShelfSlot = hit.transform.gameObject.GetComponent<ShelfSlot>();
-        c_targetCarryableItem = hit.transform.gameObject.GetComponent<CarryableItem>();
-
-        if (s_targetShelfSlot != null)
+        if(isLookingAtInteractable)
 		{
-            if (pi.actions.FindAction("Interact").WasPressedThisFrame() && !isAtMaxCarryCapacity)
+            if (hit.collider.gameObject.GetComponent<ShelfSlot>())
             {
-                HeldItems.Add(s_targetShelfSlot.TryPickupItemFromShelf(s_targetShelfSlot.Item));
-                currentCarryAmount++;
+                s_targetShelfSlot = hit.collider.gameObject.GetComponent<ShelfSlot>();
+                hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+
+                if (pi.actions.FindAction("Interact").WasPressedThisFrame() && !isAtMaxCarryCapacity)
+                {
+                    HeldItems.Add(s_targetShelfSlot.TryPickupItemFromShelf(s_targetShelfSlot.Item));
+                    currentCarryAmount++;
+                }
+                else if (pi.actions.FindAction("Interact").WasPressedThisFrame() && isAtMaxCarryCapacity)
+                {
+                    s_targetShelfSlot.TryPlaceItemOntoShelf(HeldItems[HeldItems.Count - 1]); //Always placing the top most item in the list
+                }
             }
-            else if (pi.actions.FindAction("Interact").WasPressedThisFrame() && isAtMaxCarryCapacity)
-			{
-                s_targetShelfSlot.TryPlaceItemOntoShelf(HeldItems[HeldItems.Count-1]); //Always placing the top most item in the list
-            }
-        }
-        else if (c_targetCarryableItem != null)
-		{
-            if(pi.actions.FindAction("Interact").WasPressedThisFrame())
-			{
-				try
-				{
+            else if (hit.collider.gameObject.GetComponent<CarryableItem>())
+            {
+                c_targetCarryableItem = hit.collider.gameObject.GetComponent<CarryableItem>();
+                hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+
+                if (pi.actions.FindAction("Interact").WasPressedThisFrame() && !isAtMaxCarryCapacity)
+                {
                     HeldItems.Add(TryPickupItem(c_targetCarryableItem));
                 }
-				catch (Exception e)
-				{
-                    Debug.Log("Already carrying too much!!");
-				}
-			}
-		}
+            }
+        }
+        else
+		{
+            c_targetCarryableItem.gameObject.GetComponent<Renderer>().material.color = Color.white;
+            s_targetShelfSlot.gameObject.GetComponent<Renderer>().material.color = Color.white;
+            c_targetCarryableItem = null;
+            s_targetShelfSlot = null;
+        }
     }
 
 	public CarryableItem TryPickupItem (CarryableItem item)
 	{
-        if (isAtMaxCarryCapacity) return null;
+        item.gameObject.GetComponent<Rigidbody>().useGravity = false;
+        item.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        item.gameObject.GetComponent<BoxCollider>().enabled = false;
 
         item.transform.parent = ItemHeldPosition;
+        item.transform.position = ItemHeldPosition.position;
+
         currentCarryAmount++;
         return item;
 	}
