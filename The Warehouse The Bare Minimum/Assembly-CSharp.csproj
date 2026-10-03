@@ -43,7 +43,7 @@
     <UnityVersion>6000.3.5f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\jttec\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.3.1\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\jttec\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.3.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.5f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.5f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.5f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -52,7 +52,6 @@
     <Compile Include="Assets\Scripts\Tasks\Carry out\carryOut.cs" />
     <Compile Include="Assets\Scripts\Player IO\InteractionUI.cs" />
     <Compile Include="Assets\Scripts\Tasks\Truck\truck.cs" />
-    <Compile Include="Assets\Prefabs\collectCart.cs" />
     <Compile Include="Assets\Scripts\Tasks\masterTaskManager.cs" />
     <Compile Include="Assets\Scripts\Tasks\Hang TV\Hang TV.cs" />
     <Compile Include="Assets\Scripts\Player IO\Camera\CameraCollision.cs" />
@@ -66,12 +65,15 @@
     <Compile Include="Assets\Scripts\Tasks\Curbside\curbside.cs" />
     <Compile Include="Assets\Scripts\Testing\gameTips.cs" />
     <Compile Include="Assets\Scripts\Player IO\Lobby Player Join.cs" />
+    <Compile Include="Assets\Scripts\Player IO\IInteractable.cs" />
     <Compile Include="Assets\Scripts\Tasks\cartRunManager.cs" />
     <Compile Include="Assets\Scripts\Testing\autoDoors.cs" />
     <Compile Include="Assets\Scripts\BasicPathFollow.cs" />
     <Compile Include="Assets\Scripts\Tasks\Online Order\Online Order.cs" />
+    <Compile Include="Assets\Scripts\Tasks\Cart Run\cartSubmit.cs" />
     <Compile Include="Assets\Scripts\Menu\clockInButton.cs" />
     <Compile Include="Assets\Scripts\Menu\Quit Button.cs" />
+    <Compile Include="Assets\Scripts\Player IO\Player Inventory.cs" />
     <Compile Include="Assets\Scripts\Tasks\Cart Run\cartCollections.cs" />
     <Compile Include="Assets\Scripts\Testing\playerIndicator.cs" />
     <Compile Include="Assets\Scripts\Player IO\Camera\PlayerCam.cs" />
@@ -83,8 +85,10 @@
     <Compile Include="Assets\Scripts\Tasks\Cart Run\cartRun.cs" />
     <Compile Include="Assets\Scripts\Tasks\Task.cs" />
     <Compile Include="Assets\Scripts\Tasks\carryOutManager.cs" />
+    <Compile Include="Assets\Scripts\Player IO\Item Interaction.cs" />
     <Compile Include="Assets\Scripts\Tasks\Cart Run\movingCarsL.cs" />
     <Compile Include="Assets\Scripts\Player IO\difficultyChange.cs" />
+    <Compile Include="Assets\Scripts\Tasks\Item.cs" />
     <Compile Include="Assets\Scripts\Tasks\onlineOrdersManager.cs" />
     <Compile Include="Assets\Scripts\Tasks\hangTvManager.cs" />
     <Compile Include="Assets\Scripts\Player IO\PauseMenu.cs" />
@@ -94,6 +98,7 @@
     <Compile Include="Assets\Scripts\Player IO\New Player Controls.cs" />
     <Compile Include="Assets\Scripts\Menu\lobbyPickup.cs" />
     <Compile Include="Assets\Scripts\Tasks\Recycling\recyclingTime.cs" />
+    <Compile Include="Assets\Scripts\Tasks\Laser Line\Shelf Slot.cs" />
     <Compile Include="Assets\Scripts\Player IO\interactionScript.cs" />
     <Compile Include="Assets\Scripts\Tasks\Individual Task Manager.cs" />
     <Compile Include="Assets\Scripts\Tasks\shelfTaskManager.cs" />

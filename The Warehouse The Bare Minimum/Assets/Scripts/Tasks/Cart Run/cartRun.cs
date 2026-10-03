@@ -6,7 +6,7 @@ public class cartRun : Task
     public Transform minSpawnPos,maxSpawnPos;
     public int cartAmount;
     public GameObject shoppingCart;
-    public List<GameObject> cartsInHand = new List<GameObject>();
+    public List<GameObject> spawnedCarts = new List<GameObject>();
     void Update()
     {
         if(!isComplete && isInProgress)
@@ -28,7 +28,7 @@ public class cartRun : Task
             GameObject cart = Instantiate(shoppingCart,randomSpawnPosition,Quaternion.Euler(randomRotation));
             
             //adds cart to list
-            cartsInHand.Add(cart);
+            spawnedCarts.Add(cart);
         } 
         isInProgress = true;
         isComplete = false;
@@ -38,10 +38,10 @@ public class cartRun : Task
     {
         Debug.Log("The cart run has ended");
         //Destroy the carts
-        for (int i=0;i < cartsInHand.Count;i++)
+        for (int i=0;i < spawnedCarts.Count;i++)
         {
-            GameObject tempCart = cartsInHand[i];
-            cartsInHand.Remove(tempCart);
+            GameObject tempCart = spawnedCarts[i];
+            spawnedCarts.Remove(tempCart);
             Destroy(tempCart);
         }
 
