@@ -1,89 +1,91 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ItemInteraction : MonoBehaviour
 {
-    [Header("Interaction")]
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private float interactionDistance = 3f;
+    public PlayerInput pi;
 
-    [Header("Inventory")]
-    [SerializeField] private PlayerInventory inventory;
-    [SerializeField] private Transform itemHand;
+    public LayerMask mask;
+    public float interactCheckDistance = 10.0f;
 
-    public PlayerInventory Inventory => inventory;
-    public Transform ItemHand => itemHand;
+    public bool isAtMaxCarryCapacity = false;
+    int maxCarryAmount = 5;
+    int currentCarryAmount = 0;
 
-    private void Update()
+    public Transform ItemHeldPosition;
+    public Transform InteractCheckPosition;
+    public Transform playerCameraPivot;
+    public List<CarryableItem> HeldItems;
+
+    ShelfSlot s_targetShelfSlot;
+    CarryableItem c_targetCarryableItem;
+    RaycastHit hit;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryInteract();
+        pi = gameObject.GetComponent<PlayerInput>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(currentCarryAmount == maxCarryAmount)
+		{
+            isAtMaxCarryCapacity = true;
+		}
+        
+        bool isLookingAtInteractable = Physics.BoxCast(InteractCheckPosition.position, new Vector3(6, 10, 1), InteractCheckPosition.forward, out hit, Quaternion.identity, interactCheckDistance, mask);
+
+        if(isLookingAtInteractable)
+		{
+            if (hit.collider.gameObject.GetComponent<ShelfSlot>())
+            {
+                s_targetShelfSlot = hit.collider.gameObject.GetComponent<ShelfSlot>();
+                hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+
+                if (pi.actions.FindAction("Interact").WasPressedThisFrame() && !isAtMaxCarryCapacity)
+                {
+                    HeldItems.Add(s_targetShelfSlot.TryPickupItemFromShelf(s_targetShelfSlot.Item));
+                    currentCarryAmount++;
+                }
+                else if (pi.actions.FindAction("Interact").WasPressedThisFrame() && isAtMaxCarryCapacity)
+                {
+                    s_targetShelfSlot.TryPlaceItemOntoShelf(HeldItems[HeldItems.Count - 1]); //Always placing the top most item in the list
+                }
+            }
+            else if (hit.collider.gameObject.GetComponent<CarryableItem>())
+            {
+                c_targetCarryableItem = hit.collider.gameObject.GetComponent<CarryableItem>();
+                hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+
+                if (pi.actions.FindAction("Interact").WasPressedThisFrame() && !isAtMaxCarryCapacity)
+                {
+                    HeldItems.Add(TryPickupItem(c_targetCarryableItem));
+                }
+            }
+        }
+        else
+		{
+            c_targetCarryableItem.gameObject.GetComponent<Renderer>().material.color = Color.white;
+            s_targetShelfSlot.gameObject.GetComponent<Renderer>().material.color = Color.white;
+            c_targetCarryableItem = null;
+            s_targetShelfSlot = null;
         }
     }
 
-    private void TryInteract()
-    {
-        Ray ray = new Ray(
-            playerCamera.transform.position,
-            playerCamera.transform.forward
-        );
+	public CarryableItem TryPickupItem (CarryableItem item)
+	{
+        item.gameObject.GetComponent<Rigidbody>().useGravity = false;
+        item.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        item.gameObject.GetComponent<BoxCollider>().enabled = false;
 
-        if (Physics.Raycast(
-            ray,
-            out RaycastHit hit,
-            interactionDistance))
-        {
-            IInteractable interactable =
-                hit.collider.GetComponentInParent<IInteractable>();
+        item.transform.parent = ItemHeldPosition;
+        item.transform.position = ItemHeldPosition.position;
 
-            if (interactable == null)
-                return;
-
-            if (!interactable.CanInteract(this))
-                return;
-
-            interactable.Interact(this);
-        }
-    }
-
-    public void PickUpFromSlot(ShelfSlot slot)
-    {
-        if (inventory.HasItem)
-            return;
-
-        Item item = slot.TakeItem();
-
-        if (item == null)
-            return;
-
-        if (!inventory.TryTakeItem(item))
-        {
-            slot.TryPlaceItem(item);
-            return;
-        }
-
-        item.transform.SetParent(itemHand);
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
-    }
-
-    public void PlaceIntoSlot(ShelfSlot slot)
-    {
-        if (!inventory.HasItem)
-            return;
-
-        if (slot.IsOccupied)
-            return;
-
-        Item item = inventory.RemoveItem();
-
-        if (item == null)
-            return;
-
-        if (!slot.TryPlaceItem(item))
-        {
-            inventory.TryTakeItem(item);
-        }
-    }
+        currentCarryAmount++;
+        return item;
+	}
 }
