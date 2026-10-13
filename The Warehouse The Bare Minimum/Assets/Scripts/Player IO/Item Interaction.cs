@@ -35,13 +35,15 @@ public class ItemInteraction : MonoBehaviour
         if(currentCarryAmount == maxCarryAmount)
 		{
             isAtMaxCarryCapacity = true;
+            currentCarryAmount = maxCarryAmount;
+            Debug.Log("At max carry capacity");
 		}
         
         bool isLookingAtInteractable = Physics.BoxCast(InteractCheckPosition.position, new Vector3(6, 10, 1), InteractCheckPosition.forward, out hit, Quaternion.identity, interactCheckDistance, mask);
 
         if(isLookingAtInteractable)
 		{
-            if (hit.collider.gameObject.GetComponent<ShelfSlot>())
+            /*if (hit.collider.gameObject.GetComponent<ShelfSlot>())
             {
                 s_targetShelfSlot = hit.collider.gameObject.GetComponent<ShelfSlot>();
                 hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
@@ -56,7 +58,7 @@ public class ItemInteraction : MonoBehaviour
                     s_targetShelfSlot.TryPlaceItemOntoShelf(HeldItems[HeldItems.Count - 1]); //Always placing the top most item in the list
                 }
             }
-            else if (hit.collider.gameObject.GetComponent<CarryableItem>())
+            else*/ if (hit.collider.gameObject.GetComponent<CarryableItem>())
             {
                 c_targetCarryableItem = hit.collider.gameObject.GetComponent<CarryableItem>();
                 hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
@@ -85,7 +87,19 @@ public class ItemInteraction : MonoBehaviour
         item.transform.parent = ItemHeldPosition;
         item.transform.position = ItemHeldPosition.position;
 
-        currentCarryAmount++;
-        return item;
+		if (currentCarryAmount > 0)
+		{
+			float tempYAdd = 0;
+
+			for(int i = 0; i < HeldItems.Count; i++)
+			{
+                tempYAdd += HeldItems[i].transform.localScale.y;
+			}
+
+			item.transform.position = new Vector3(ItemHeldPosition.position.x, ItemHeldPosition.position.y + tempYAdd, ItemHeldPosition.position.z);
+		}
+
+		currentCarryAmount++;
+		return item;
 	}
 }
