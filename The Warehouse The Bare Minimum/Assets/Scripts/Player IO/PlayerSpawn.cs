@@ -9,6 +9,7 @@ public class PlayerSpawn : MonoBehaviour
 {
 	//The spawn points for the players
 	public Transform[] spawnPoints;
+	public Transform[] testingSpawnPoints;
 
 	//Maps the inputs of connected controllers to their player number (i.e. player 0 would be tied to the first connected input device. player 1 would be connected to the second. etc up to player 3 [a.k.a the 4th connected input])
 	public Dictionary<int, PlayerInput> controllers = new Dictionary<int, PlayerInput>();
@@ -26,6 +27,8 @@ public class PlayerSpawn : MonoBehaviour
 	public delegate void Spawn();
 	public static Spawn Spawned;
 	public static Spawn StartGame;
+
+	public bool SkipIntro = false;
 
 	//Reference for the PIM component
 	private PlayerInputManager playerInputManager;
@@ -61,39 +64,54 @@ public class PlayerSpawn : MonoBehaviour
 		//Sets the # of closed-box gameobjects to 'active' based on the number of players
 		for (int p = 0; p < controllers.Count; p++)
 		{
-			Debug.Log(p);
+			//Debug.Log(p);
 			closedBoxes[p].SetActive(true);
 		}
 	}
 
 	private void Update()
 	{
-		//Checks if the players are on spawn pallet
-		if(inBox)
+		if (SkipIntro && inBox)
 		{
-			//Repeats process for each controller connected
 			for (int i = 0; i < controllers.Count; i++)
 			{
 				//Sets the gameobejcts position based on the players number (player 0 goes to poistion 0, etc)
-				controllers[i].gameObject.transform.position = spawnPoints[i].position;
+				controllers[i].gameObject.transform.position = testingSpawnPoints[i].position;
+			}
 
-				//Checks for the lerp action of the spawn pallet to finish while also checking for the 'interact' button of player 0 to be pressed
-				if (controllers[0].actions.FindAction("Interact").WasPressedThisFrame() && bpf.isDoneLerping)
+			//Calls the event to trigger
+			StartGame.Invoke();
+			inBox = false;
+		}
+		else
+		{
+			//Checks if the players are on spawn pallet
+			if (inBox)
+			{
+				//Repeats process for each controller connected
+				for (int i = 0; i < controllers.Count; i++)
 				{
-					//Calls the event to trigger
-					StartGame.Invoke();
-					
-					//Sets the parent of the player to null (which removes them from being parented to the pallet) and sets the box they're in to be the open-box object
-					for (int x = 0; x < controllers.Count; x++)
+					//Sets the gameobejcts position based on the players number (player 0 goes to poistion 0, etc)
+					controllers[i].gameObject.transform.position = spawnPoints[i].position;
+
+					//Checks for the lerp action of the spawn pallet to finish while also checking for the 'interact' button of player 0 to be pressed
+					if (controllers[0].actions.FindAction("Interact").WasPressedThisFrame() && bpf.isDoneLerping)
 					{
-						controllers[x].gameObject.GetComponentInParent<Transform>().SetParent(null);
+						//Calls the event to trigger
+						StartGame.Invoke();
 
-						closedBoxes[x].SetActive(false);
-						openBoxes[x].SetActive(true);
+						//Sets the parent of the player to null (which removes them from being parented to the pallet) and sets the box they're in to be the open-box object
+						for (int x = 0; x < controllers.Count; x++)
+						{
+							controllers[x].gameObject.GetComponentInParent<Transform>().SetParent(null);
+
+							closedBoxes[x].SetActive(false);
+							openBoxes[x].SetActive(true);
+						}
+
+						//Ends the loop
+						inBox = false;
 					}
-
-					//Ends the loop
-					inBox = false;
 				}
 			}
 		}
@@ -119,8 +137,17 @@ public class PlayerSpawn : MonoBehaviour
 					//Double checks the player isn't null
 					if (newPlayer != null)
 					{
-						//Sets their spawn position to the spawn point on the pallet
-						Transform targetSpawn = spawnPoints[spawnedPlayerCount];
+						Transform targetSpawn = null;
+
+						if (SkipIntro)
+						{
+							targetSpawn = testingSpawnPoints[spawnedPlayerCount];
+						}
+						else
+						{
+							//Sets their spawn position to the spawn point on the pallet
+							targetSpawn = spawnPoints[spawnedPlayerCount];
+						}
 
 						//Checks that the player object has a rigidbody
 						if (newPlayer.TryGetComponent<Rigidbody>(out Rigidbody rb))
@@ -128,9 +155,17 @@ public class PlayerSpawn : MonoBehaviour
 							//Calles the event for spawning in the players
 							Spawned.Invoke();
 
-							//Sets the parent of the player to the spawn point on the pallet
-							rb.GetComponentInParent<Transform>().SetParent(spawnPoints[spawnedPlayerCount]);
-							rb.position = targetSpawn.position;
+							if(!SkipIntro)
+							{
+								//Sets the parent of the player to the spawn point on the pallet
+								rb.GetComponentInParent<Transform>().SetParent(spawnPoints[spawnedPlayerCount]);
+								rb.position = targetSpawn.position;
+							}
+							else
+							{
+								rb.GetComponentInParent<Transform>().SetParent(null);
+								rb.position = targetSpawn.position;
+							}
 						}
 
 						//Adds the player input to a dictionary and ties it to a player number (player 0 is tied to the first input device)

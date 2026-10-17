@@ -19,14 +19,19 @@ public class ItemInteraction : MonoBehaviour
     public Transform playerCameraPivot;
     public List<CarryableItem> HeldItems;
 
+    public float maxThrowCharge;
+    public float throwForce;
+
     ShelfSlot s_targetShelfSlot;
     CarryableItem c_targetCarryableItem;
     RaycastHit hit;
+    float t_throwHeldDuration;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         pi = gameObject.GetComponent<PlayerInput>();
+        Mathf.Clamp(t_throwHeldDuration, 0, maxThrowCharge);
     }
 
     // Update is called once per frame
@@ -69,6 +74,22 @@ public class ItemInteraction : MonoBehaviour
                 }
             }
         }
+        else if (pi.actions.FindAction("Interact").WasPerformedThisFrame() && currentCarryAmount > 0)
+		{
+            t_throwHeldDuration += Time.deltaTime;
+
+            if (pi.actions.FindAction("Interact").WasReleasedThisFrame() && currentCarryAmount > 0)
+            {
+                if (t_throwHeldDuration < 0.2f)
+                {
+                    TryThrowItem(0);
+                }
+                else
+                {
+                    TryThrowItem(t_throwHeldDuration * throwForce);
+                }
+            }
+        }
         else
 		{
             c_targetCarryableItem.gameObject.GetComponent<Renderer>().material.color = Color.white;
@@ -102,4 +123,19 @@ public class ItemInteraction : MonoBehaviour
 		currentCarryAmount++;
 		return item;
 	}
+
+    public void TryThrowItem (float throwStrength)
+	{
+        CarryableItem i = HeldItems[HeldItems.Count - 1];
+
+        HeldItems.Remove(i);
+
+        i.gameObject.GetComponent<Rigidbody>().useGravity = true;
+        i.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        i.gameObject.GetComponent<BoxCollider>().enabled = true;
+
+        i.transform.parent = null;
+
+        i.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * throwStrength, ForceMode.Impulse);
+    }
 }

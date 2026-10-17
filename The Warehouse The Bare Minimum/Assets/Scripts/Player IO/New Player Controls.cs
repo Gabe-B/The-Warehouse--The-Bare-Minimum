@@ -277,16 +277,19 @@ public class NewPlayerControls : MonoBehaviour
 
 	public void SpawnPlayer()
 	{
-		//Disables movement controls and makes the player invisible while spawning in
-		m_rigidbody.useGravity = false;
-		m_rigidbody.constraints = RigidbodyConstraints.FreezePosition;
-		m_rigidbody.isKinematic = false;
-		canMove = false;
-		gameObject.GetComponent<BoxCollider>().enabled = false;
-
-		foreach (SkinnedMeshRenderer m in playerModel.GetComponentsInChildren<SkinnedMeshRenderer>())
+		if(!PlayerSpawn._instance.SkipIntro)
 		{
-			m.enabled = false;
+			//Disables movement controls and makes the player invisible while spawning in
+			m_rigidbody.useGravity = false;
+			m_rigidbody.constraints = RigidbodyConstraints.FreezePosition;
+			m_rigidbody.isKinematic = false;
+			canMove = false;
+			gameObject.GetComponent<BoxCollider>().enabled = false;
+
+			foreach (SkinnedMeshRenderer m in playerModel.GetComponentsInChildren<SkinnedMeshRenderer>())
+			{
+				m.enabled = false;
+			}
 		}
 	}
 
@@ -305,6 +308,9 @@ public class NewPlayerControls : MonoBehaviour
 			m.enabled = true;
 		}
 
-		m_rigidbody.AddForce(new Vector3 (0, 350f, 0), ForceMode.Impulse);
+		if(!PlayerSpawn._instance.SkipIntro)
+		{
+			m_rigidbody.AddForce(new Vector3(0, 350f, 0), ForceMode.Impulse);
+		}
 	}
 }
