@@ -26,6 +26,7 @@ public class ItemInteraction : MonoBehaviour
     CarryableItem c_targetCarryableItem;
     RaycastHit hit;
     float t_throwHeldDuration;
+    bool b_hasStartedThrow = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,10 +44,10 @@ public class ItemInteraction : MonoBehaviour
             currentCarryAmount = maxCarryAmount;
             Debug.Log("At max carry capacity");
 		}
-        
-        bool isLookingAtInteractable = Physics.BoxCast(InteractCheckPosition.position, new Vector3(6, 10, 1), InteractCheckPosition.forward, out hit, Quaternion.identity, interactCheckDistance, mask);
 
-        if(isLookingAtInteractable)
+        bool isLookingAtInteractable = Physics.BoxCast(InteractCheckPosition.position, new Vector3(6, 10, 2), InteractCheckPosition.forward, out hit, Quaternion.identity, interactCheckDistance, mask);
+
+        if (isLookingAtInteractable)
 		{
             /*if (hit.collider.gameObject.GetComponent<ShelfSlot>())
             {
@@ -74,23 +75,32 @@ public class ItemInteraction : MonoBehaviour
                 }
             }
         }
-        else if (pi.actions.FindAction("Interact").WasPerformedThisFrame() && currentCarryAmount > 0)
+        else if (pi.actions.FindAction("Interact").WasPressedThisFrame() && currentCarryAmount > 0)
+		{
+            b_hasStartedThrow = true;
+        }
+        else if (pi.actions.FindAction("Interact").WasReleasedThisFrame() && b_hasStartedThrow)
+        {
+            Debug.Log("Throwing");
+            if (t_throwHeldDuration < 0.2f)
+            {
+                TryThrowItem(0);
+            }
+            else
+            {
+                TryThrowItem(t_throwHeldDuration * throwForce);
+            }
+
+            b_hasStartedThrow = false;
+            t_throwHeldDuration = 0;
+        }
+        else if (b_hasStartedThrow)
 		{
             t_throwHeldDuration += Time.deltaTime;
-
-            if (pi.actions.FindAction("Interact").WasReleasedThisFrame() && currentCarryAmount > 0)
-            {
-                if (t_throwHeldDuration < 0.2f)
-                {
-                    TryThrowItem(0);
-                }
-                else
-                {
-                    TryThrowItem(t_throwHeldDuration * throwForce);
-                }
-            }
+            Debug.Log(t_throwHeldDuration);
         }
-        else
+        
+        if(!isLookingAtInteractable)
 		{
             c_targetCarryableItem.gameObject.GetComponent<Renderer>().material.color = Color.white;
             s_targetShelfSlot.gameObject.GetComponent<Renderer>().material.color = Color.white;
@@ -126,6 +136,8 @@ public class ItemInteraction : MonoBehaviour
 
     public void TryThrowItem (float throwStrength)
 	{
+        currentCarryAmount--;
+
         CarryableItem i = HeldItems[HeldItems.Count - 1];
 
         HeldItems.Remove(i);
@@ -136,6 +148,6 @@ public class ItemInteraction : MonoBehaviour
 
         i.transform.parent = null;
 
-        i.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * throwStrength, ForceMode.Impulse);
+        i.gameObject.GetComponent<Rigidbody>().AddForce(pi.GetComponent<NewPlayerControls>().playerModel.transform.forward * throwStrength, ForceMode.Impulse);
     }
 }
